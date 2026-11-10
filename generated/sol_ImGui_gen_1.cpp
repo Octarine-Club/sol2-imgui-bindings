@@ -146,288 +146,299 @@ float GetFrameHeight() {
   return ret;
 }
 
-ImGuiID GetItemID() {
-  auto ret = ImGui::GetItemID();
+ImGuiItemFlags GetItemFlags() {
+  auto ret = ImGui::GetItemFlags();
   return ret;
 }
 
-ImVec2 GetItemRectSize() {
-  auto ret = ImGui::GetItemRectSize();
+ImVec2 GetItemRectMin() {
+  auto ret = ImGui::GetItemRectMin();
   return ret;
 }
 
-int GetMouseClickedCount(ImGuiMouseButton button) {
-  auto ret = ImGui::GetMouseClickedCount(static_cast<ImGuiMouseButton>(button));
+int GetKeyPressedAmount(ImGuiKey key, float repeat_delay, float rate) {
+  auto ret = ImGui::GetKeyPressedAmount(static_cast<ImGuiKey>(key), repeat_delay, rate);
   return ret;
 }
 
-ImVec2 GetMousePos() {
-  auto ret = ImGui::GetMousePos();
+ImVec2 GetMouseDragDelta(sol::optional<ImGuiMouseButton> button, sol::optional<float> lock_threshold) {
+  ImGuiMouseButton button_v = static_cast<ImGuiMouseButton>(button.value_or(0));
+  float lock_threshold_v = lock_threshold.value_or(-1.0f);
+  auto ret = ImGui::GetMouseDragDelta(button_v, lock_threshold_v);
   return ret;
 }
 
-float GetScrollMaxY() {
-  auto ret = ImGui::GetScrollMaxY();
+float GetScrollMaxX() {
+  auto ret = ImGui::GetScrollMaxX();
   return ret;
 }
 
-std::string GetStyleColorName(ImGuiCol idx) {
-  const char* ret = ImGui::GetStyleColorName(static_cast<ImGuiCol>(idx));
+float GetScrollY() {
+  auto ret = ImGui::GetScrollY();
+  return ret;
+}
+
+float GetTextLineHeightWithSpacing() {
+  auto ret = ImGui::GetTextLineHeightWithSpacing();
+  return ret;
+}
+
+std::string GetVersion() {
+  const char* ret = ImGui::GetVersion();
   return std::string(ret ? ret : "");
 }
 
-double GetTime() {
-  auto ret = ImGui::GetTime();
+ImGuiID GetWindowDockID() {
+  auto ret = ImGui::GetWindowDockID();
   return ret;
 }
 
-ImVec2 GetWindowContentRegionMax() {
-  auto ret = ImGui::GetWindowContentRegionMax();
+ImVec2 GetWindowPos() {
+  auto ret = ImGui::GetWindowPos();
   return ret;
 }
 
-float GetWindowDpiScale() {
-  auto ret = ImGui::GetWindowDpiScale();
-  return ret;
+void Indent(sol::optional<float> indent_w) {
+  float indent_w_v = indent_w.value_or(0.0f);
+  ImGui::Indent(indent_w_v);
 }
 
-ImVec2 GetWindowSize() {
-  auto ret = ImGui::GetWindowSize();
-  return ret;
-}
-
-std::tuple<double, bool> InputDouble(const std::string& label, double v, sol::optional<double> step, sol::optional<double> step_fast, sol::optional<std::string> format, sol::optional<ImGuiInputTextFlags> flags) {
-  double v_v = v;
-  double step_v = step.value_or(0.0);
-  double step_fast_v = step_fast.value_or(0.0);
-  std::string format_v = format.value_or(std::string("%.6f"));
+std::tuple<int, bool> InputInt(const std::string& label, int v, sol::optional<int> step, sol::optional<int> step_fast, sol::optional<ImGuiInputTextFlags> flags) {
+  int v_v = v;
+  int step_v = step.value_or(1);
+  int step_fast_v = step_fast.value_or(100);
   ImGuiInputTextFlags flags_v = static_cast<ImGuiInputTextFlags>(flags.value_or(0));
-  auto ret = ImGui::InputDouble(label.c_str(), &v_v, step_v, step_fast_v, format_v.c_str(), flags_v);
+  auto ret = ImGui::InputInt(label.c_str(), &v_v, step_v, step_fast_v, flags_v);
   return std::make_tuple(v_v, ret);
 }
 
-bool InvisibleButton(const std::string& str_id, const ImVec2& size, sol::optional<ImGuiButtonFlags> flags) {
-  ImGuiButtonFlags flags_v = static_cast<ImGuiButtonFlags>(flags.value_or(0));
-  auto ret = ImGui::InvisibleButton(str_id.c_str(), size, flags_v);
+bool IsAnyItemFocused() {
+  auto ret = ImGui::IsAnyItemFocused();
   return ret;
 }
 
-bool IsAnyItemHovered() {
-  auto ret = ImGui::IsAnyItemHovered();
+bool IsItemActivated() {
+  auto ret = ImGui::IsItemActivated();
   return ret;
 }
 
-bool IsItemActive() {
-  auto ret = ImGui::IsItemActive();
+bool IsItemDeactivated() {
+  auto ret = ImGui::IsItemDeactivated();
   return ret;
 }
 
-bool IsItemDeactivatedAfterEdit() {
-  auto ret = ImGui::IsItemDeactivatedAfterEdit();
+bool IsItemFocused() {
+  auto ret = ImGui::IsItemFocused();
   return ret;
 }
 
-bool IsItemHovered(sol::optional<ImGuiHoveredFlags> flags) {
+bool IsItemToggledSelection() {
+  auto ret = ImGui::IsItemToggledSelection();
+  return ret;
+}
+
+bool IsKeyDown(ImGuiKey key) {
+  auto ret = ImGui::IsKeyDown(static_cast<ImGuiKey>(key));
+  return ret;
+}
+
+bool IsMouseClicked(ImGuiMouseButton button, sol::optional<bool> repeat) {
+  bool repeat_v = repeat.value_or(false);
+  auto ret = ImGui::IsMouseClicked(static_cast<ImGuiMouseButton>(button), repeat_v);
+  return ret;
+}
+
+bool IsMouseDragging(ImGuiMouseButton button, sol::optional<float> lock_threshold) {
+  float lock_threshold_v = lock_threshold.value_or(-1.0f);
+  auto ret = ImGui::IsMouseDragging(static_cast<ImGuiMouseButton>(button), lock_threshold_v);
+  return ret;
+}
+
+bool IsMouseReleasedWithDelay(ImGuiMouseButton button, sol::optional<float> delay) {
+  float delay_v = delay.value_or(-1.f);
+  auto ret = ImGui::IsMouseReleasedWithDelay(static_cast<ImGuiMouseButton>(button), delay_v);
+  return ret;
+}
+
+bool IsWindowCollapsed() {
+  auto ret = ImGui::IsWindowCollapsed();
+  return ret;
+}
+
+bool IsWindowHovered(sol::optional<ImGuiHoveredFlags> flags) {
   ImGuiHoveredFlags flags_v = static_cast<ImGuiHoveredFlags>(flags.value_or(0));
-  auto ret = ImGui::IsItemHovered(flags_v);
+  auto ret = ImGui::IsWindowHovered(flags_v);
   return ret;
 }
 
-bool IsItemVisible() {
-  auto ret = ImGui::IsItemVisible();
-  return ret;
+void LogButtons() {
+  ImGui::LogButtons();
 }
 
-bool IsKeyPressed(ImGuiKey key, sol::optional<bool> repeat) {
-  bool repeat_v = repeat.value_or(true);
-  auto ret = ImGui::IsKeyPressed(static_cast<ImGuiKey>(key), repeat_v);
-  return ret;
-}
-
-bool IsMouseDoubleClicked(ImGuiMouseButton button) {
-  auto ret = ImGui::IsMouseDoubleClicked(static_cast<ImGuiMouseButton>(button));
-  return ret;
-}
-
-bool IsMouseHoveringRect(const ImVec2& r_min, const ImVec2& r_max, sol::optional<bool> clip) {
-  bool clip_v = clip.value_or(true);
-  auto ret = ImGui::IsMouseHoveringRect(r_min, r_max, clip_v);
-  return ret;
-}
-
-bool IsPopupOpen(const std::string& str_id, sol::optional<ImGuiPopupFlags> flags) {
-  ImGuiPopupFlags flags_v = static_cast<ImGuiPopupFlags>(flags.value_or(0));
-  auto ret = ImGui::IsPopupOpen(str_id.c_str(), flags_v);
-  return ret;
-}
-
-bool IsWindowDocked() {
-  auto ret = ImGui::IsWindowDocked();
-  return ret;
-}
-
-void LoadIniSettingsFromDisk(const std::string& ini_filename) {
-  ImGui::LoadIniSettingsFromDisk(ini_filename.c_str());
-}
-
-void LogFinish() {
-  ImGui::LogFinish();
-}
-
-void LogToTTY(sol::optional<int> auto_open_depth) {
+void LogToFile(sol::optional<int> auto_open_depth, sol::optional<std::string> filename) {
   int auto_open_depth_v = auto_open_depth.value_or(-1);
-  ImGui::LogToTTY(auto_open_depth_v);
+  std::string filename_v = filename.value_or(std::string());
+  ImGui::LogToFile(auto_open_depth_v, filename_v.c_str());
 }
 
-void NextColumn() {
-  ImGui::NextColumn();
+void NewLine() {
+  ImGui::NewLine();
 }
 
-void PopClipRect() {
-  ImGui::PopClipRect();
+void PopButtonRepeat() {
+  ImGui::PopButtonRepeat();
 }
 
-void PopItemFlag() {
-  ImGui::PopItemFlag();
+void PopID() {
+  ImGui::PopID();
 }
 
-void PopStyleVar(sol::optional<int> count) {
+void PopStyleColor(sol::optional<int> count) {
   int count_v = count.value_or(1);
-  ImGui::PopStyleVar(count_v);
+  ImGui::PopStyleColor(count_v);
 }
 
-void ProgressBar(float fraction, sol::optional<ImVec2> size_arg, sol::optional<std::string> overlay) {
-  ImVec2 size_arg_v = size_arg.value_or(ImVec2(-FLT_MIN, 0));
-  std::string overlay_v = overlay.value_or(std::string());
-  ImGui::ProgressBar(fraction, size_arg_v, overlay_v.c_str());
+void PopTextWrapPos() {
+  ImGui::PopTextWrapPos();
 }
 
-void PushItemFlag(ImGuiItemFlags option, bool enabled) {
-  ImGui::PushItemFlag(static_cast<ImGuiItemFlags>(option), enabled);
+void PushClipRect(const ImVec2& clip_rect_min, const ImVec2& clip_rect_max, bool intersect_with_current_clip_rect) {
+  ImGui::PushClipRect(clip_rect_min, clip_rect_max, intersect_with_current_clip_rect);
 }
 
-void PushStyleVarY(ImGuiStyleVar idx, float val_y) {
-  ImGui::PushStyleVarY(static_cast<ImGuiStyleVar>(idx), val_y);
+void PushStyleVarX(ImGuiStyleVar idx, float val_x) {
+  ImGui::PushStyleVarX(static_cast<ImGuiStyleVar>(idx), val_x);
 }
 
-void Render() {
-  ImGui::Render();
+void PushTextWrapPos(sol::optional<float> wrap_local_pos_x) {
+  float wrap_local_pos_x_v = wrap_local_pos_x.value_or(0.0f);
+  ImGui::PushTextWrapPos(wrap_local_pos_x_v);
 }
 
-void SaveIniSettingsToDisk(const std::string& ini_filename) {
-  ImGui::SaveIniSettingsToDisk(ini_filename.c_str());
+void SameLine(sol::optional<float> offset_from_start_x, sol::optional<float> spacing) {
+  float offset_from_start_x_v = offset_from_start_x.value_or(0.0f);
+  float spacing_v = spacing.value_or(-1.0f);
+  ImGui::SameLine(offset_from_start_x_v, spacing_v);
 }
 
-void SetClipboardText(const std::string& text) {
-  ImGui::SetClipboardText(text.c_str());
+void SeparatorText(const std::string& label) {
+  ImGui::SeparatorText(label.c_str());
 }
 
-void SetColumnWidth(int column_index, float width) {
-  ImGui::SetColumnWidth(column_index, width);
+void SetColumnOffset(int column_index, float offset_x) {
+  ImGui::SetColumnOffset(column_index, offset_x);
 }
 
-void SetCursorPosY(float local_y) {
-  ImGui::SetCursorPosY(local_y);
+void SetCursorPosX(float local_x) {
+  ImGui::SetCursorPosX(local_x);
 }
 
-void SetItemKeyOwner(ImGuiKey key) {
-  ImGui::SetItemKeyOwner(static_cast<ImGuiKey>(key));
+void SetItemDefaultFocus() {
+  ImGui::SetItemDefaultFocus();
 }
 
-void SetNavCursorVisible(bool visible) {
-  ImGui::SetNavCursorVisible(visible);
+void SetMouseCursor(ImGuiMouseCursor cursor_type) {
+  ImGui::SetMouseCursor(static_cast<ImGuiMouseCursor>(cursor_type));
 }
 
-void SetNextItemAllowOverlap() {
-  ImGui::SetNextItemAllowOverlap();
+void SetNextFrameWantCaptureMouse(bool want_capture_mouse) {
+  ImGui::SetNextFrameWantCaptureMouse(want_capture_mouse);
 }
 
-void SetNextItemStorageID(ImGuiID storage_id) {
-  ImGui::SetNextItemStorageID(static_cast<ImGuiID>(storage_id));
+void SetNextItemShortcut(ImGuiKeyChord key_chord, sol::optional<ImGuiInputFlags> flags) {
+  ImGuiInputFlags flags_v = static_cast<ImGuiInputFlags>(flags.value_or(0));
+  ImGui::SetNextItemShortcut(static_cast<ImGuiKeyChord>(key_chord), flags_v);
 }
 
-void SetNextWindowCollapsed(bool collapsed, sol::optional<ImGuiCond> cond) {
+void SetNextWindowBgAlpha(float alpha) {
+  ImGui::SetNextWindowBgAlpha(alpha);
+}
+
+void SetNextWindowDockID(ImGuiID dock_id, sol::optional<ImGuiCond> cond) {
   ImGuiCond cond_v = static_cast<ImGuiCond>(cond.value_or(0));
-  ImGui::SetNextWindowCollapsed(collapsed, cond_v);
+  ImGui::SetNextWindowDockID(static_cast<ImGuiID>(dock_id), cond_v);
 }
 
-void SetNextWindowFocus() {
-  ImGui::SetNextWindowFocus();
+void SetNextWindowScroll(const ImVec2& scroll) {
+  ImGui::SetNextWindowScroll(scroll);
 }
 
-void SetNextWindowSize(const ImVec2& size, sol::optional<ImGuiCond> cond) {
-  ImGuiCond cond_v = static_cast<ImGuiCond>(cond.value_or(0));
-  ImGui::SetNextWindowSize(size, cond_v);
+void SetScrollFromPosX(float local_x, sol::optional<float> center_x_ratio) {
+  float center_x_ratio_v = center_x_ratio.value_or(0.5f);
+  ImGui::SetScrollFromPosX(local_x, center_x_ratio_v);
 }
 
-void SetScrollFromPosY(float local_y, sol::optional<float> center_y_ratio) {
+void SetScrollHereY(sol::optional<float> center_y_ratio) {
   float center_y_ratio_v = center_y_ratio.value_or(0.5f);
-  ImGui::SetScrollFromPosY(local_y, center_y_ratio_v);
+  ImGui::SetScrollHereY(center_y_ratio_v);
 }
 
-void SetScrollX(float scroll_x) {
-  ImGui::SetScrollX(scroll_x);
+void SetTabItemClosed(const std::string& tab_or_docked_window_label) {
+  ImGui::SetTabItemClosed(tab_or_docked_window_label.c_str());
 }
 
-void SetWindowFontScale(float scale) {
-  ImGui::SetWindowFontScale(scale);
+void ShowFontSelector(const std::string& label) {
+  ImGui::ShowFontSelector(label.c_str());
 }
 
-bool ShowStyleSelector(const std::string& label) {
-  auto ret = ImGui::ShowStyleSelector(label.c_str());
-  return ret;
-}
-
-std::tuple<float, bool> SliderFloat(const std::string& label, float v, float v_min, float v_max, sol::optional<std::string> format, sol::optional<ImGuiSliderFlags> flags) {
-  float v_v = v;
-  std::string format_v = format.value_or(std::string("%.3f"));
+std::tuple<float, bool> SliderAngle(const std::string& label, float v_rad, sol::optional<float> v_degrees_min, sol::optional<float> v_degrees_max, sol::optional<std::string> format, sol::optional<ImGuiSliderFlags> flags) {
+  float v_rad_v = v_rad;
+  float v_degrees_min_v = v_degrees_min.value_or(-360.0f);
+  float v_degrees_max_v = v_degrees_max.value_or(+360.0f);
+  std::string format_v = format.value_or(std::string("%.0f deg"));
   ImGuiSliderFlags flags_v = static_cast<ImGuiSliderFlags>(flags.value_or(0));
-  auto ret = ImGui::SliderFloat(label.c_str(), &v_v, v_min, v_max, format_v.c_str(), flags_v);
+  auto ret = ImGui::SliderAngle(label.c_str(), &v_rad_v, v_degrees_min_v, v_degrees_max_v, format_v.c_str(), flags_v);
+  return std::make_tuple(v_rad_v, ret);
+}
+
+bool SmallButton(const std::string& label) {
+  auto ret = ImGui::SmallButton(label.c_str());
+  return ret;
+}
+
+void TableAngledHeadersRow() {
+  ImGui::TableAngledHeadersRow();
+}
+
+int TableGetColumnIndex() {
+  auto ret = ImGui::TableGetColumnIndex();
+  return ret;
+}
+
+int TableGetRowIndex() {
+  auto ret = ImGui::TableGetRowIndex();
+  return ret;
+}
+
+bool TableNextColumn() {
+  auto ret = ImGui::TableNextColumn();
+  return ret;
+}
+
+void TableSetColumnEnabled(int column_n, bool v) {
+  ImGui::TableSetColumnEnabled(column_n, v);
+}
+
+void TableSetupScrollFreeze(int cols, int rows) {
+  ImGui::TableSetupScrollFreeze(cols, rows);
+}
+
+void TextUnformatted(const std::string& text, sol::optional<std::string> text_end) {
+  std::string text_end_v = text_end.value_or(std::string());
+  ImGui::TextUnformatted(text.c_str(), text_end_v.c_str());
+}
+
+void Unindent(sol::optional<float> indent_w) {
+  float indent_w_v = indent_w.value_or(0.0f);
+  ImGui::Unindent(indent_w_v);
+}
+
+std::tuple<int, bool> VSliderInt(const std::string& label, const ImVec2& size, int v, int v_min, int v_max, sol::optional<std::string> format, sol::optional<ImGuiSliderFlags> flags) {
+  int v_v = v;
+  std::string format_v = format.value_or(std::string("%d"));
+  ImGuiSliderFlags flags_v = static_cast<ImGuiSliderFlags>(flags.value_or(0));
+  auto ret = ImGui::VSliderInt(label.c_str(), size, &v_v, v_min, v_max, format_v.c_str(), flags_v);
   return std::make_tuple(v_v, ret);
-}
-
-void Spacing() {
-  ImGui::Spacing();
-}
-
-int TableGetColumnCount() {
-  auto ret = ImGui::TableGetColumnCount();
-  return ret;
-}
-
-std::string TableGetColumnName(sol::optional<int> column_n) {
-  int column_n_v = column_n.value_or(-1);
-  const char* ret = ImGui::TableGetColumnName(column_n_v);
-  return std::string(ret ? ret : "");
-}
-
-void TableHeader(const std::string& label) {
-  ImGui::TableHeader(label.c_str());
-}
-
-void TableNextRow(sol::optional<ImGuiTableRowFlags> row_flags, sol::optional<float> min_row_height) {
-  ImGuiTableRowFlags row_flags_v = static_cast<ImGuiTableRowFlags>(row_flags.value_or(0));
-  float min_row_height_v = min_row_height.value_or(0.0f);
-  ImGui::TableNextRow(row_flags_v, min_row_height_v);
-}
-
-bool TableSetColumnIndex(int column_n) {
-  auto ret = ImGui::TableSetColumnIndex(column_n);
-  return ret;
-}
-
-bool TextLink(const std::string& label) {
-  auto ret = ImGui::TextLink(label.c_str());
-  return ret;
-}
-
-bool TreeNodeGetOpen(ImGuiID storage_id) {
-  auto ret = ImGui::TreeNodeGetOpen(static_cast<ImGuiID>(storage_id));
-  return ret;
-}
-
-void UpdatePlatformWindows() {
-  ImGui::UpdatePlatformWindows();
 }
 
 }  // namespace
@@ -458,63 +469,64 @@ void InitGenerated_1(sol::table& t) {
   t.set_function("GetCursorPosY", GetCursorPosY);
   t.set_function("GetFontSize", GetFontSize);
   t.set_function("GetFrameHeight", GetFrameHeight);
-  t.set_function("GetItemID", GetItemID);
-  t.set_function("GetItemRectSize", GetItemRectSize);
-  t.set_function("GetMouseClickedCount", GetMouseClickedCount);
-  t.set_function("GetMousePos", GetMousePos);
-  t.set_function("GetScrollMaxY", GetScrollMaxY);
-  t.set_function("GetStyleColorName", GetStyleColorName);
-  t.set_function("GetTime", GetTime);
-  t.set_function("GetWindowContentRegionMax", GetWindowContentRegionMax);
-  t.set_function("GetWindowDpiScale", GetWindowDpiScale);
-  t.set_function("GetWindowSize", GetWindowSize);
-  t.set_function("InputDouble", InputDouble);
-  t.set_function("InvisibleButton", InvisibleButton);
-  t.set_function("IsAnyItemHovered", IsAnyItemHovered);
-  t.set_function("IsItemActive", IsItemActive);
-  t.set_function("IsItemDeactivatedAfterEdit", IsItemDeactivatedAfterEdit);
-  t.set_function("IsItemHovered", IsItemHovered);
-  t.set_function("IsItemVisible", IsItemVisible);
-  t.set_function("IsKeyPressed", IsKeyPressed);
-  t.set_function("IsMouseDoubleClicked", IsMouseDoubleClicked);
-  t.set_function("IsMouseHoveringRect", IsMouseHoveringRect);
-  t.set_function("IsPopupOpen", IsPopupOpen);
-  t.set_function("IsWindowDocked", IsWindowDocked);
-  t.set_function("LoadIniSettingsFromDisk", LoadIniSettingsFromDisk);
-  t.set_function("LogFinish", LogFinish);
-  t.set_function("LogToTTY", LogToTTY);
-  t.set_function("NextColumn", NextColumn);
-  t.set_function("PopClipRect", PopClipRect);
-  t.set_function("PopItemFlag", PopItemFlag);
-  t.set_function("PopStyleVar", PopStyleVar);
-  t.set_function("ProgressBar", ProgressBar);
-  t.set_function("PushItemFlag", PushItemFlag);
-  t.set_function("PushStyleVarY", PushStyleVarY);
-  t.set_function("Render", Render);
-  t.set_function("SaveIniSettingsToDisk", SaveIniSettingsToDisk);
-  t.set_function("SetClipboardText", SetClipboardText);
-  t.set_function("SetColumnWidth", SetColumnWidth);
-  t.set_function("SetCursorPosY", SetCursorPosY);
-  t.set_function("SetItemKeyOwner", SetItemKeyOwner);
-  t.set_function("SetNavCursorVisible", SetNavCursorVisible);
-  t.set_function("SetNextItemAllowOverlap", SetNextItemAllowOverlap);
-  t.set_function("SetNextItemStorageID", SetNextItemStorageID);
-  t.set_function("SetNextWindowCollapsed", SetNextWindowCollapsed);
-  t.set_function("SetNextWindowFocus", SetNextWindowFocus);
-  t.set_function("SetNextWindowSize", SetNextWindowSize);
-  t.set_function("SetScrollFromPosY", SetScrollFromPosY);
-  t.set_function("SetScrollX", SetScrollX);
-  t.set_function("SetWindowFontScale", SetWindowFontScale);
-  t.set_function("ShowStyleSelector", ShowStyleSelector);
-  t.set_function("SliderFloat", SliderFloat);
-  t.set_function("Spacing", Spacing);
-  t.set_function("TableGetColumnCount", TableGetColumnCount);
-  t.set_function("TableGetColumnName", TableGetColumnName);
-  t.set_function("TableHeader", TableHeader);
-  t.set_function("TableNextRow", TableNextRow);
-  t.set_function("TableSetColumnIndex", TableSetColumnIndex);
-  t.set_function("TextLink", TextLink);
-  t.set_function("TreeNodeGetOpen", TreeNodeGetOpen);
-  t.set_function("UpdatePlatformWindows", UpdatePlatformWindows);
+  t.set_function("GetItemFlags", GetItemFlags);
+  t.set_function("GetItemRectMin", GetItemRectMin);
+  t.set_function("GetKeyPressedAmount", GetKeyPressedAmount);
+  t.set_function("GetMouseDragDelta", GetMouseDragDelta);
+  t.set_function("GetScrollMaxX", GetScrollMaxX);
+  t.set_function("GetScrollY", GetScrollY);
+  t.set_function("GetTextLineHeightWithSpacing", GetTextLineHeightWithSpacing);
+  t.set_function("GetVersion", GetVersion);
+  t.set_function("GetWindowDockID", GetWindowDockID);
+  t.set_function("GetWindowPos", GetWindowPos);
+  t.set_function("Indent", Indent);
+  t.set_function("InputInt", InputInt);
+  t.set_function("IsAnyItemFocused", IsAnyItemFocused);
+  t.set_function("IsItemActivated", IsItemActivated);
+  t.set_function("IsItemDeactivated", IsItemDeactivated);
+  t.set_function("IsItemFocused", IsItemFocused);
+  t.set_function("IsItemToggledSelection", IsItemToggledSelection);
+  t.set_function("IsKeyDown", IsKeyDown);
+  t.set_function("IsMouseClicked", IsMouseClicked);
+  t.set_function("IsMouseDragging", IsMouseDragging);
+  t.set_function("IsMouseReleasedWithDelay", IsMouseReleasedWithDelay);
+  t.set_function("IsWindowCollapsed", IsWindowCollapsed);
+  t.set_function("IsWindowHovered", IsWindowHovered);
+  t.set_function("LogButtons", LogButtons);
+  t.set_function("LogToFile", LogToFile);
+  t.set_function("NewLine", NewLine);
+  t.set_function("PopButtonRepeat", PopButtonRepeat);
+  t.set_function("PopID", PopID);
+  t.set_function("PopStyleColor", PopStyleColor);
+  t.set_function("PopTextWrapPos", PopTextWrapPos);
+  t.set_function("PushClipRect", PushClipRect);
+  t.set_function("PushStyleVarX", PushStyleVarX);
+  t.set_function("PushTextWrapPos", PushTextWrapPos);
+  t.set_function("SameLine", SameLine);
+  t.set_function("SeparatorText", SeparatorText);
+  t.set_function("SetColumnOffset", SetColumnOffset);
+  t.set_function("SetCursorPosX", SetCursorPosX);
+  t.set_function("SetItemDefaultFocus", SetItemDefaultFocus);
+  t.set_function("SetMouseCursor", SetMouseCursor);
+  t.set_function("SetNextFrameWantCaptureMouse", SetNextFrameWantCaptureMouse);
+  t.set_function("SetNextItemShortcut", SetNextItemShortcut);
+  t.set_function("SetNextWindowBgAlpha", SetNextWindowBgAlpha);
+  t.set_function("SetNextWindowDockID", SetNextWindowDockID);
+  t.set_function("SetNextWindowScroll", SetNextWindowScroll);
+  t.set_function("SetScrollFromPosX", SetScrollFromPosX);
+  t.set_function("SetScrollHereY", SetScrollHereY);
+  t.set_function("SetTabItemClosed", SetTabItemClosed);
+  t.set_function("ShowFontSelector", ShowFontSelector);
+  t.set_function("SliderAngle", SliderAngle);
+  t.set_function("SmallButton", SmallButton);
+  t.set_function("TableAngledHeadersRow", TableAngledHeadersRow);
+  t.set_function("TableGetColumnIndex", TableGetColumnIndex);
+  t.set_function("TableGetRowIndex", TableGetRowIndex);
+  t.set_function("TableNextColumn", TableNextColumn);
+  t.set_function("TableSetColumnEnabled", TableSetColumnEnabled);
+  t.set_function("TableSetupScrollFreeze", TableSetupScrollFreeze);
+  t.set_function("TextUnformatted", TextUnformatted);
+  t.set_function("Unindent", Unindent);
+  t.set_function("VSliderInt", VSliderInt);
 }
 }  // namespace sol_ImGui

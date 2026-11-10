@@ -20,27 +20,51 @@ void RegisterEnum(sol::state& lua, const char* enum_name,
 static void InitEnum_ImDrawFlags(sol::state& lua) {
   static const EnumEntry entries[] = {
       {"None", static_cast<long long>(ImDrawFlags_None)},
+      {"RoundTopLeft", static_cast<long long>(ImDrawFlags_RoundTopLeft)},
+      {"RoundTopRight", static_cast<long long>(ImDrawFlags_RoundTopRight)},
+      {"RoundBottomLeft", static_cast<long long>(ImDrawFlags_RoundBottomLeft)},
+      {"RoundBottomRight", static_cast<long long>(ImDrawFlags_RoundBottomRight)},
+      {"RoundNone", static_cast<long long>(ImDrawFlags_RoundNone)},
+      {"RoundAll", static_cast<long long>(ImDrawFlags_RoundAll)},
+      {"RoundTop", static_cast<long long>(ImDrawFlags_RoundTop)},
+      {"RoundBottom", static_cast<long long>(ImDrawFlags_RoundBottom)},
+      {"RoundLeft", static_cast<long long>(ImDrawFlags_RoundLeft)},
+      {"RoundRight", static_cast<long long>(ImDrawFlags_RoundRight)},
       {"Closed", static_cast<long long>(ImDrawFlags_Closed)},
+      {"JoinMiter", static_cast<long long>(ImDrawFlags_JoinMiter)},
+      {"CapSquare", static_cast<long long>(ImDrawFlags_CapSquare)},
+      {"AAFill", static_cast<long long>(ImDrawFlags_AAFill)},
+      {"AALines", static_cast<long long>(ImDrawFlags_AALines)},
+      {"AALineEnds", static_cast<long long>(ImDrawFlags_AALineEnds)},
+      {"StrokeInside", static_cast<long long>(ImDrawFlags_StrokeInside)},
+      {"StrokeCenter", static_cast<long long>(ImDrawFlags_StrokeCenter)},
+      {"StrokeCenterBiased", static_cast<long long>(ImDrawFlags_StrokeCenterBiased)},
+      {"StrokeOutside", static_cast<long long>(ImDrawFlags_StrokeOutside)},
+      {"StrokeLegacy", static_cast<long long>(ImDrawFlags_StrokeLegacy)},
+      {"TextNoPixelSnap", static_cast<long long>(ImDrawFlags_TextNoPixelSnap)},
+      {"UseTexForRoundCorners", static_cast<long long>(ImDrawFlags_UseTexForRoundCorners)},
+      {"UseVtxOffset", static_cast<long long>(ImDrawFlags_UseVtxOffset)},
       {"RoundCornersTopLeft", static_cast<long long>(ImDrawFlags_RoundCornersTopLeft)},
       {"RoundCornersTopRight", static_cast<long long>(ImDrawFlags_RoundCornersTopRight)},
       {"RoundCornersBottomLeft", static_cast<long long>(ImDrawFlags_RoundCornersBottomLeft)},
       {"RoundCornersBottomRight", static_cast<long long>(ImDrawFlags_RoundCornersBottomRight)},
       {"RoundCornersNone", static_cast<long long>(ImDrawFlags_RoundCornersNone)},
+      {"RoundCornersAll", static_cast<long long>(ImDrawFlags_RoundCornersAll)},
       {"RoundCornersTop", static_cast<long long>(ImDrawFlags_RoundCornersTop)},
       {"RoundCornersBottom", static_cast<long long>(ImDrawFlags_RoundCornersBottom)},
       {"RoundCornersLeft", static_cast<long long>(ImDrawFlags_RoundCornersLeft)},
-      {"RoundCornersRight", static_cast<long long>(ImDrawFlags_RoundCornersRight)},
-      {"RoundCornersAll", static_cast<long long>(ImDrawFlags_RoundCornersAll)}};
+      {"RoundCornersRight", static_cast<long long>(ImDrawFlags_RoundCornersRight)}};
   RegisterEnum(lua, "ImDrawFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
 static void InitEnum_ImDrawListFlags(sol::state& lua) {
   static const EnumEntry entries[] = {
       {"None", static_cast<long long>(ImDrawListFlags_None)},
+      {"AntiAliasedFill", static_cast<long long>(ImDrawListFlags_AntiAliasedFill)},
       {"AntiAliasedLines", static_cast<long long>(ImDrawListFlags_AntiAliasedLines)},
       {"AntiAliasedLinesUseTex", static_cast<long long>(ImDrawListFlags_AntiAliasedLinesUseTex)},
-      {"AntiAliasedFill", static_cast<long long>(ImDrawListFlags_AntiAliasedFill)},
-      {"AllowVtxOffset", static_cast<long long>(ImDrawListFlags_AllowVtxOffset)}};
+      {"AllowVtxOffset", static_cast<long long>(ImDrawListFlags_AllowVtxOffset)},
+      {"TextNoPixelSnap", static_cast<long long>(ImDrawListFlags_TextNoPixelSnap)}};
   RegisterEnum(lua, "ImDrawListFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
@@ -49,7 +73,8 @@ static void InitEnum_ImFontAtlasFlags(sol::state& lua) {
       {"None", static_cast<long long>(ImFontAtlasFlags_None)},
       {"NoPowerOfTwoHeight", static_cast<long long>(ImFontAtlasFlags_NoPowerOfTwoHeight)},
       {"NoMouseCursors", static_cast<long long>(ImFontAtlasFlags_NoMouseCursors)},
-      {"NoBakedLines", static_cast<long long>(ImFontAtlasFlags_NoBakedLines)}};
+      {"NoBakedLines", static_cast<long long>(ImFontAtlasFlags_NoBakedLines)},
+      {"NoBakedRoundCorners", static_cast<long long>(ImFontAtlasFlags_NoBakedRoundCorners)}};
   RegisterEnum(lua, "ImFontAtlasFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
@@ -58,7 +83,8 @@ static void InitEnum_ImFontFlags(sol::state& lua) {
       {"None", static_cast<long long>(ImFontFlags_None)},
       {"NoLoadError", static_cast<long long>(ImFontFlags_NoLoadError)},
       {"NoLoadGlyphs", static_cast<long long>(ImFontFlags_NoLoadGlyphs)},
-      {"LockBakedSizes", static_cast<long long>(ImFontFlags_LockBakedSizes)}};
+      {"LockBakedSizes", static_cast<long long>(ImFontFlags_LockBakedSizes)},
+      {"ImplicitRefSize", static_cast<long long>(ImFontFlags_ImplicitRefSize)}};
   RegisterEnum(lua, "ImFontFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
@@ -124,6 +150,7 @@ static void InitEnum_ImGuiCol(sol::state& lua) {
       {"ScrollbarGrabHovered", static_cast<long long>(ImGuiCol_ScrollbarGrabHovered)},
       {"ScrollbarGrabActive", static_cast<long long>(ImGuiCol_ScrollbarGrabActive)},
       {"CheckMark", static_cast<long long>(ImGuiCol_CheckMark)},
+      {"CheckboxSelectedBg", static_cast<long long>(ImGuiCol_CheckboxSelectedBg)},
       {"SliderGrab", static_cast<long long>(ImGuiCol_SliderGrab)},
       {"SliderGrabActive", static_cast<long long>(ImGuiCol_SliderGrabActive)},
       {"Button", static_cast<long long>(ImGuiCol_Button)},
@@ -201,6 +228,7 @@ static void InitEnum_ImGuiColorEditFlags(sol::state& lua) {
       {"Float", static_cast<long long>(ImGuiColorEditFlags_Float)},
       {"PickerHueBar", static_cast<long long>(ImGuiColorEditFlags_PickerHueBar)},
       {"PickerHueWheel", static_cast<long long>(ImGuiColorEditFlags_PickerHueWheel)},
+      {"PickerNoRotate", static_cast<long long>(ImGuiColorEditFlags_PickerNoRotate)},
       {"InputRGB", static_cast<long long>(ImGuiColorEditFlags_InputRGB)},
       {"InputHSV", static_cast<long long>(ImGuiColorEditFlags_InputHSV)},
       {"AlphaPreview", static_cast<long long>(ImGuiColorEditFlags_AlphaPreview)}};
@@ -309,8 +337,7 @@ static void InitEnum_ImGuiDragDropFlags(sol::state& lua) {
       {"AcceptNoDrawDefaultRect", static_cast<long long>(ImGuiDragDropFlags_AcceptNoDrawDefaultRect)},
       {"AcceptNoPreviewTooltip", static_cast<long long>(ImGuiDragDropFlags_AcceptNoPreviewTooltip)},
       {"AcceptDrawAsHovered", static_cast<long long>(ImGuiDragDropFlags_AcceptDrawAsHovered)},
-      {"AcceptPeekOnly", static_cast<long long>(ImGuiDragDropFlags_AcceptPeekOnly)},
-      {"SourceAutoExpirePayload", static_cast<long long>(ImGuiDragDropFlags_SourceAutoExpirePayload)}};
+      {"AcceptPeekOnly", static_cast<long long>(ImGuiDragDropFlags_AcceptPeekOnly)}};
   RegisterEnum(lua, "ImGuiDragDropFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
@@ -408,7 +435,11 @@ static void InitEnum_ImGuiItemFlags(sol::state& lua) {
       {"ButtonRepeat", static_cast<long long>(ImGuiItemFlags_ButtonRepeat)},
       {"AutoClosePopups", static_cast<long long>(ImGuiItemFlags_AutoClosePopups)},
       {"AllowDuplicateId", static_cast<long long>(ImGuiItemFlags_AllowDuplicateId)},
-      {"Disabled", static_cast<long long>(ImGuiItemFlags_Disabled)}};
+      {"Disabled", static_cast<long long>(ImGuiItemFlags_Disabled)},
+      {"LiveEditOnInputText", static_cast<long long>(ImGuiItemFlags_LiveEditOnInputText)},
+      {"LiveEditOnInputScalar", static_cast<long long>(ImGuiItemFlags_LiveEditOnInputScalar)},
+      {"LiveEditOnInput", static_cast<long long>(ImGuiItemFlags_LiveEditOnInput)},
+      {"MixedValue", static_cast<long long>(ImGuiItemFlags_MixedValue)}};
   RegisterEnum(lua, "ImGuiItemFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
@@ -742,6 +773,9 @@ static void InitEnum_ImGuiStyleVar(sol::state& lua) {
       {"TableAngledHeadersTextAlign", static_cast<long long>(ImGuiStyleVar_TableAngledHeadersTextAlign)},
       {"TreeLinesSize", static_cast<long long>(ImGuiStyleVar_TreeLinesSize)},
       {"TreeLinesRounding", static_cast<long long>(ImGuiStyleVar_TreeLinesRounding)},
+      {"MenuItemRounding", static_cast<long long>(ImGuiStyleVar_MenuItemRounding)},
+      {"SelectableRounding", static_cast<long long>(ImGuiStyleVar_SelectableRounding)},
+      {"DragDropTargetRounding", static_cast<long long>(ImGuiStyleVar_DragDropTargetRounding)},
       {"ButtonTextAlign", static_cast<long long>(ImGuiStyleVar_ButtonTextAlign)},
       {"SelectableTextAlign", static_cast<long long>(ImGuiStyleVar_SelectableTextAlign)},
       {"SeparatorSize", static_cast<long long>(ImGuiStyleVar_SeparatorSize)},
@@ -895,8 +929,7 @@ static void InitEnum_ImGuiTreeNodeFlags(sol::state& lua) {
       {"DrawLinesNone", static_cast<long long>(ImGuiTreeNodeFlags_DrawLinesNone)},
       {"DrawLinesFull", static_cast<long long>(ImGuiTreeNodeFlags_DrawLinesFull)},
       {"DrawLinesToNodes", static_cast<long long>(ImGuiTreeNodeFlags_DrawLinesToNodes)},
-      {"NavLeftJumpsBackHere", static_cast<long long>(ImGuiTreeNodeFlags_NavLeftJumpsBackHere)},
-      {"SpanTextWidth", static_cast<long long>(ImGuiTreeNodeFlags_SpanTextWidth)}};
+      {"NavLeftJumpsBackHere", static_cast<long long>(ImGuiTreeNodeFlags_NavLeftJumpsBackHere)}};
   RegisterEnum(lua, "ImGuiTreeNodeFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 

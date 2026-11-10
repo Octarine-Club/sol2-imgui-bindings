@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(
         sol2-imgui-bindings
-        VERSION 1.92.7  # tracks the Dear ImGui version the bindings target (see CONTRIBUTING.md)
+        VERSION 1.93.0  # tracks the Dear ImGui version the bindings target (see CONTRIBUTING.md)
         LANGUAGES CXX
 )
 

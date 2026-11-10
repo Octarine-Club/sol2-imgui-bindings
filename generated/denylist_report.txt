@@ -2,7 +2,7 @@
 // Produced by codegen/generate.py from codegen/metadata/dcimgui.json.
 // Regenerate with the `regen-bindings` CMake target; see CONTRIBUTING.md.
 
-# 250 functions generated, 133 left to manual/denylist.
+# 251 functions generated, 133 left to manual/denylist.
 
 AcceptDragDropPayload: pointer return (const ImGuiPayload*)
 Begin: optional output pointer (p_open style)
