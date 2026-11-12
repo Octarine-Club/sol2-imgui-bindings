@@ -2,7 +2,7 @@
 // Produced by codegen/generate.py from codegen/metadata/dcimgui.json.
 // Regenerate with the `regen-bindings` CMake target; see CONTRIBUTING.md.
 
-# 251 functions generated, 133 left to manual/denylist.
+# 244 functions generated, 126 left to manual/denylist.
 
 AcceptDragDropPayload: pointer return (const ImGuiPayload*)
 Begin: optional output pointer (p_open style)
@@ -23,8 +23,6 @@ CreateContext: pointer argument (ImFontAtlas*)
 DebugLog: varargs
 DebugLogV: user type (va_list)
 DestroyContext: pointer argument (ImGuiContext*)
-DockSpace: pointer argument (const ImGuiWindowClass*)
-DockSpaceOverViewport: pointer argument (const ImGuiViewport*)
 DragFloat2: array argument (float[2])
 DragFloat3: array argument (float[3])
 DragFloat4: array argument (float[4])
@@ -34,10 +32,8 @@ DragInt4: array argument (int[4])
 DragScalar: pointer argument (void*)
 DragScalarN: pointer argument (void*)
 EndMultiSelect: pointer return (ImGuiMultiSelectIO*)
-FindViewportByID: pointer return (ImGuiViewport*)
-FindViewportByPlatformHandle: pointer argument (void*)
 GetAllocatorFunctions: pointer argument (ImGuiMemAllocFunc*)
-GetBackgroundDrawList: pointer argument (ImGuiViewport*)
+GetBackgroundDrawList: pointer return (ImDrawList*)
 GetColorU32: overloaded (3 signatures) -> manual
 GetCurrentContext: pointer return (ImGuiContext*)
 GetDragDropPayload: pointer return (const ImGuiPayload*)
@@ -45,16 +41,15 @@ GetDrawData: pointer return (ImDrawData*)
 GetDrawListSharedData: pointer return (ImDrawListSharedData*)
 GetFont: pointer return (ImFont*)
 GetFontBaked: pointer return (ImFontBaked*)
-GetForegroundDrawList: pointer argument (ImGuiViewport*)
+GetForegroundDrawList: pointer return (ImDrawList*)
 GetID: overloaded (4 signatures) -> manual
 GetIO: pointer return (ImGuiIO*)
-GetMainViewport: pointer return (ImGuiViewport*)
+GetMainViewport: excluded: docking/viewport API
 GetPlatformIO: pointer return (ImGuiPlatformIO*)
 GetStateStorage: pointer return (ImGuiStorage*)
 GetStyle: pointer return (ImGuiStyle*)
 GetStyleColorVec4: pointer return (const ImVec4*)
 GetWindowDrawList: pointer return (ImDrawList*)
-GetWindowViewport: pointer return (ImGuiViewport*)
 Image: overloaded (2 signatures) -> manual
 ImageButton: opaque user type (ImTextureRef)
 ImageWithBg: opaque user type (ImTextureRef)
@@ -87,7 +82,6 @@ PushID: overloaded (4 signatures) -> manual
 PushStyleColor: overloaded (2 signatures) -> manual
 PushStyleVar: overloaded (2 signatures) -> manual
 RadioButton: overloaded (2 signatures) -> manual
-RenderPlatformWindowsDefault: pointer argument (void*)
 SaveIniSettingsToMemory: pointer argument (size_t*)
 Selectable: overloaded (2 signatures) -> manual
 SetAllocatorFunctions: opaque user type (ImGuiMemAllocFunc)
@@ -96,7 +90,6 @@ SetDragDropPayload: pointer argument (const void*)
 SetItemTooltip: varargs
 SetItemTooltipV: user type (va_list)
 SetNextItemSelectionUserData: opaque user type (ImGuiSelectionUserData)
-SetNextWindowClass: pointer argument (const ImGuiWindowClass*)
 SetNextWindowSizeConstraints: opaque user type (ImGuiSizeCallback)
 SetStateStorage: pointer argument (ImGuiStorage*)
 SetTooltip: varargs

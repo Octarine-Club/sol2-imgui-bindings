@@ -95,11 +95,7 @@ static void InitEnum_ImGuiBackendFlags(sol::state& lua) {
       {"HasMouseCursors", static_cast<long long>(ImGuiBackendFlags_HasMouseCursors)},
       {"HasSetMousePos", static_cast<long long>(ImGuiBackendFlags_HasSetMousePos)},
       {"RendererHasVtxOffset", static_cast<long long>(ImGuiBackendFlags_RendererHasVtxOffset)},
-      {"RendererHasTextures", static_cast<long long>(ImGuiBackendFlags_RendererHasTextures)},
-      {"RendererHasViewports", static_cast<long long>(ImGuiBackendFlags_RendererHasViewports)},
-      {"PlatformHasViewports", static_cast<long long>(ImGuiBackendFlags_PlatformHasViewports)},
-      {"HasMouseHoveredViewport", static_cast<long long>(ImGuiBackendFlags_HasMouseHoveredViewport)},
-      {"HasParentViewport", static_cast<long long>(ImGuiBackendFlags_HasParentViewport)}};
+      {"RendererHasTextures", static_cast<long long>(ImGuiBackendFlags_RendererHasTextures)}};
   RegisterEnum(lua, "ImGuiBackendFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
@@ -173,8 +169,6 @@ static void InitEnum_ImGuiCol(sol::state& lua) {
       {"TabDimmed", static_cast<long long>(ImGuiCol_TabDimmed)},
       {"TabDimmedSelected", static_cast<long long>(ImGuiCol_TabDimmedSelected)},
       {"TabDimmedSelectedOverline", static_cast<long long>(ImGuiCol_TabDimmedSelectedOverline)},
-      {"DockingPreview", static_cast<long long>(ImGuiCol_DockingPreview)},
-      {"DockingEmptyBg", static_cast<long long>(ImGuiCol_DockingEmptyBg)},
       {"PlotLines", static_cast<long long>(ImGuiCol_PlotLines)},
       {"PlotLinesHovered", static_cast<long long>(ImGuiCol_PlotLinesHovered)},
       {"PlotHistogram", static_cast<long long>(ImGuiCol_PlotHistogram)},
@@ -267,14 +261,10 @@ static void InitEnum_ImGuiConfigFlags(sol::state& lua) {
       {"NoMouse", static_cast<long long>(ImGuiConfigFlags_NoMouse)},
       {"NoMouseCursorChange", static_cast<long long>(ImGuiConfigFlags_NoMouseCursorChange)},
       {"NoKeyboard", static_cast<long long>(ImGuiConfigFlags_NoKeyboard)},
-      {"DockingEnable", static_cast<long long>(ImGuiConfigFlags_DockingEnable)},
-      {"ViewportsEnable", static_cast<long long>(ImGuiConfigFlags_ViewportsEnable)},
       {"IsSRGB", static_cast<long long>(ImGuiConfigFlags_IsSRGB)},
       {"IsTouchScreen", static_cast<long long>(ImGuiConfigFlags_IsTouchScreen)},
       {"NavEnableSetMousePos", static_cast<long long>(ImGuiConfigFlags_NavEnableSetMousePos)},
-      {"NavNoCaptureKeyboard", static_cast<long long>(ImGuiConfigFlags_NavNoCaptureKeyboard)},
-      {"DpiEnableScaleFonts", static_cast<long long>(ImGuiConfigFlags_DpiEnableScaleFonts)},
-      {"DpiEnableScaleViewports", static_cast<long long>(ImGuiConfigFlags_DpiEnableScaleViewports)}};
+      {"NavNoCaptureKeyboard", static_cast<long long>(ImGuiConfigFlags_NavNoCaptureKeyboard)}};
   RegisterEnum(lua, "ImGuiConfigFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
@@ -307,21 +297,6 @@ static void InitEnum_ImGuiDir(sol::state& lua) {
   RegisterEnum(lua, "ImGuiDir", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
-static void InitEnum_ImGuiDockNodeFlags(sol::state& lua) {
-  static const EnumEntry entries[] = {
-      {"None", static_cast<long long>(ImGuiDockNodeFlags_None)},
-      {"KeepAliveOnly", static_cast<long long>(ImGuiDockNodeFlags_KeepAliveOnly)},
-      {"NoDockingOverCentralNode", static_cast<long long>(ImGuiDockNodeFlags_NoDockingOverCentralNode)},
-      {"PassthruCentralNode", static_cast<long long>(ImGuiDockNodeFlags_PassthruCentralNode)},
-      {"NoDockingSplit", static_cast<long long>(ImGuiDockNodeFlags_NoDockingSplit)},
-      {"NoResize", static_cast<long long>(ImGuiDockNodeFlags_NoResize)},
-      {"AutoHideTabBar", static_cast<long long>(ImGuiDockNodeFlags_AutoHideTabBar)},
-      {"NoUndocking", static_cast<long long>(ImGuiDockNodeFlags_NoUndocking)},
-      {"NoSplit", static_cast<long long>(ImGuiDockNodeFlags_NoSplit)},
-      {"NoDockingInCentralNode", static_cast<long long>(ImGuiDockNodeFlags_NoDockingInCentralNode)}};
-  RegisterEnum(lua, "ImGuiDockNodeFlags", entries, sizeof(entries) / sizeof(entries[0]));
-}
-
 static void InitEnum_ImGuiDragDropFlags(sol::state& lua) {
   static const EnumEntry entries[] = {
       {"None", static_cast<long long>(ImGuiDragDropFlags_None)},
@@ -348,7 +323,6 @@ static void InitEnum_ImGuiFocusedFlags(sol::state& lua) {
       {"RootWindow", static_cast<long long>(ImGuiFocusedFlags_RootWindow)},
       {"AnyWindow", static_cast<long long>(ImGuiFocusedFlags_AnyWindow)},
       {"NoPopupHierarchy", static_cast<long long>(ImGuiFocusedFlags_NoPopupHierarchy)},
-      {"DockHierarchy", static_cast<long long>(ImGuiFocusedFlags_DockHierarchy)},
       {"RootAndChildWindows", static_cast<long long>(ImGuiFocusedFlags_RootAndChildWindows)}};
   RegisterEnum(lua, "ImGuiFocusedFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
@@ -360,7 +334,6 @@ static void InitEnum_ImGuiHoveredFlags(sol::state& lua) {
       {"RootWindow", static_cast<long long>(ImGuiHoveredFlags_RootWindow)},
       {"AnyWindow", static_cast<long long>(ImGuiHoveredFlags_AnyWindow)},
       {"NoPopupHierarchy", static_cast<long long>(ImGuiHoveredFlags_NoPopupHierarchy)},
-      {"DockHierarchy", static_cast<long long>(ImGuiHoveredFlags_DockHierarchy)},
       {"AllowWhenBlockedByPopup", static_cast<long long>(ImGuiHoveredFlags_AllowWhenBlockedByPopup)},
       {"AllowWhenBlockedByActiveItem", static_cast<long long>(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem)},
       {"AllowWhenOverlappedByItem", static_cast<long long>(ImGuiHoveredFlags_AllowWhenOverlappedByItem)},
@@ -782,7 +755,6 @@ static void InitEnum_ImGuiStyleVar(sol::state& lua) {
       {"SeparatorTextBorderSize", static_cast<long long>(ImGuiStyleVar_SeparatorTextBorderSize)},
       {"SeparatorTextAlign", static_cast<long long>(ImGuiStyleVar_SeparatorTextAlign)},
       {"SeparatorTextPadding", static_cast<long long>(ImGuiStyleVar_SeparatorTextPadding)},
-      {"DockingSeparatorSize", static_cast<long long>(ImGuiStyleVar_DockingSeparatorSize)},
       {"COUNT", static_cast<long long>(ImGuiStyleVar_COUNT)}};
   RegisterEnum(lua, "ImGuiStyleVar", entries, sizeof(entries) / sizeof(entries[0]));
 }
@@ -933,26 +905,6 @@ static void InitEnum_ImGuiTreeNodeFlags(sol::state& lua) {
   RegisterEnum(lua, "ImGuiTreeNodeFlags", entries, sizeof(entries) / sizeof(entries[0]));
 }
 
-static void InitEnum_ImGuiViewportFlags(sol::state& lua) {
-  static const EnumEntry entries[] = {
-      {"None", static_cast<long long>(ImGuiViewportFlags_None)},
-      {"IsPlatformWindow", static_cast<long long>(ImGuiViewportFlags_IsPlatformWindow)},
-      {"IsPlatformMonitor", static_cast<long long>(ImGuiViewportFlags_IsPlatformMonitor)},
-      {"OwnedByApp", static_cast<long long>(ImGuiViewportFlags_OwnedByApp)},
-      {"NoDecoration", static_cast<long long>(ImGuiViewportFlags_NoDecoration)},
-      {"NoTaskBarIcon", static_cast<long long>(ImGuiViewportFlags_NoTaskBarIcon)},
-      {"NoFocusOnAppearing", static_cast<long long>(ImGuiViewportFlags_NoFocusOnAppearing)},
-      {"NoFocusOnClick", static_cast<long long>(ImGuiViewportFlags_NoFocusOnClick)},
-      {"NoInputs", static_cast<long long>(ImGuiViewportFlags_NoInputs)},
-      {"NoRendererClear", static_cast<long long>(ImGuiViewportFlags_NoRendererClear)},
-      {"NoAutoMerge", static_cast<long long>(ImGuiViewportFlags_NoAutoMerge)},
-      {"TopMost", static_cast<long long>(ImGuiViewportFlags_TopMost)},
-      {"CanHostOtherWindows", static_cast<long long>(ImGuiViewportFlags_CanHostOtherWindows)},
-      {"IsMinimized", static_cast<long long>(ImGuiViewportFlags_IsMinimized)},
-      {"IsFocused", static_cast<long long>(ImGuiViewportFlags_IsFocused)}};
-  RegisterEnum(lua, "ImGuiViewportFlags", entries, sizeof(entries) / sizeof(entries[0]));
-}
-
 static void InitEnum_ImGuiWindowFlags(sol::state& lua) {
   static const EnumEntry entries[] = {
       {"None", static_cast<long long>(ImGuiWindowFlags_None)},
@@ -975,7 +927,6 @@ static void InitEnum_ImGuiWindowFlags(sol::state& lua) {
       {"NoNavInputs", static_cast<long long>(ImGuiWindowFlags_NoNavInputs)},
       {"NoNavFocus", static_cast<long long>(ImGuiWindowFlags_NoNavFocus)},
       {"UnsavedDocument", static_cast<long long>(ImGuiWindowFlags_UnsavedDocument)},
-      {"NoDocking", static_cast<long long>(ImGuiWindowFlags_NoDocking)},
       {"NoNav", static_cast<long long>(ImGuiWindowFlags_NoNav)},
       {"NoDecoration", static_cast<long long>(ImGuiWindowFlags_NoDecoration)},
       {"NoInputs", static_cast<long long>(ImGuiWindowFlags_NoInputs)}};
@@ -1014,7 +965,6 @@ void InitEnums(sol::state& lua) {
   InitEnum_ImGuiConfigFlags(lua);
   InitEnum_ImGuiDataType(lua);
   InitEnum_ImGuiDir(lua);
-  InitEnum_ImGuiDockNodeFlags(lua);
   InitEnum_ImGuiDragDropFlags(lua);
   InitEnum_ImGuiFocusedFlags(lua);
   InitEnum_ImGuiHoveredFlags(lua);
@@ -1040,7 +990,6 @@ void InitEnums(sol::state& lua) {
   InitEnum_ImGuiTableFlags(lua);
   InitEnum_ImGuiTableRowFlags(lua);
   InitEnum_ImGuiTreeNodeFlags(lua);
-  InitEnum_ImGuiViewportFlags(lua);
   InitEnum_ImGuiWindowFlags(lua);
   InitEnum_ImTextureFormat(lua);
   InitEnum_ImTextureStatus(lua);

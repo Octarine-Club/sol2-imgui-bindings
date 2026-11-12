@@ -1,8 +1,10 @@
 # Per-symbol generator overrides.
 #
-# [skip]   functions = [...]   -> not bound at all (truly unwanted).
-# [manual] functions = [...]   -> bound by hand in manual/sol_ImGui_Manual.cpp,
-#                                 which self-registers via InitManual(table).
+# [skip]   functions     = [...] -> not bound at all (truly unwanted).
+#          enums         = [...] -> enums completely excluded from bindings.
+#          enum_elements = [...] -> specific enum elements excluded.
+# [manual] functions     = [...] -> bound by hand in manual/sol_ImGui_Manual.cpp,
+#                                   which self-registers via InitManual(table).
 #
 # Functions the generator already cannot express (overloads, output bool*,
 # array in/out, text buffers, opaque pointers, varargs) are reported in
@@ -10,7 +12,48 @@
 # here unless a hand-written replacement exists in manual/.
 
 [skip]
-functions = []
+# Exclude Dear ImGui docking and multi-viewport APIs so bindings target standard non-docking ImGui.
+functions = [
+    "DockSpace",
+    "DockSpaceOverViewport",
+    "SetNextWindowDockID",
+    "GetWindowDockID",
+    "IsWindowDocked",
+    "FindViewportByID",
+    "FindViewportByPlatformHandle",
+]
+
+enums = [
+    "ImGuiDockNodeFlags",
+    "ImGuiViewportFlags",
+]
+
+enum_elements = [
+    "ImGuiBackendFlags_RendererHasViewports",
+    "ImGuiBackendFlags_PlatformHasViewports",
+    "ImGuiBackendFlags_HasMouseHoveredViewport",
+    "ImGuiBackendFlags_HasParentViewport",
+    "ImGuiCol_DockingPreview",
+    "ImGuiCol_DockingEmptyBg",
+    "ImGuiConfigFlags_DockingEnable",
+    "ImGuiConfigFlags_ViewportsEnable",
+    "ImGuiConfigFlags_DpiEnableScaleViewports",
+    "ImGuiDockNodeFlags_None",
+    "ImGuiDockNodeFlags_KeepAliveOnly",
+    "ImGuiDockNodeFlags_NoDockingOverCentralNode",
+    "ImGuiDockNodeFlags_PassthruCentralNode",
+    "ImGuiDockNodeFlags_NoDockingSplit",
+    "ImGuiDockNodeFlags_NoResize",
+    "ImGuiDockNodeFlags_AutoHideTabBar",
+    "ImGuiDockNodeFlags_NoUndocking",
+    "ImGuiDockNodeFlags_NoSplit",
+    "ImGuiDockNodeFlags_NoDockingInCentralNode",
+    "ImGuiFocusedFlags_DockHierarchy",
+    "ImGuiHoveredFlags_DockHierarchy",
+    "ImGuiStyleVar_DockingSeparatorSize",
+    "ImGuiWindowFlags_NoDocking",
+    "ImGuiWindowFlags_DockNodeHost",
+]
 
 [manual]
 functions = []

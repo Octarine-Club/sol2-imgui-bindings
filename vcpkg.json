@@ -5,9 +5,6 @@
   "dependencies": [
     {
       "name": "imgui",
-      "features": [
-        "docking-experimental"
-      ],
       "version>=": "1.93.0"
     },
     {

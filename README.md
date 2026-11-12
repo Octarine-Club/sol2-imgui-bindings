@@ -76,8 +76,7 @@ and `-<rev>` is a binding revision (binding-only fixes bump `<rev>` without an
 ImGui change). The `-<rev>` lives only in the git tag; CMake `find_package`
 version comparisons see just the `X.Y.Z` project version.
 
-Dependencies: Dear ImGui (built with the `docking-experimental` feature for the
-docking bindings) and sol2. `vcpkg.json` pins versions known to work.
+Dependencies: Dear ImGui and sol2. `vcpkg.json` pins versions known to work.
 
 ## What's covered
 

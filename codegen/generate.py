@@ -72,11 +72,17 @@ INT_LIKE_USER = {
 ENUM_TYPES: set[str] = set()
 
 # Opaque / unsupported user types -- any function touching one is left to manual.
-OPAQUE_USER_PREFIXES = ("ImDrawList", "ImFont", "ImGuiViewport", "ImGuiStorage",
+OPAQUE_USER_PREFIXES = ("ImDrawList", "ImFont", "ImGuiViewport", "ImGuiDockNode", "ImGuiStorage",
                         "ImGuiPayload", "ImGuiContext", "ImGuiIO", "ImGuiStyle",
                         "ImGuiTableSortSpecs", "ImGuiWindowClass", "ImGuiInputTextCallback",
                         "ImGuiSizeCallback", "ImGuiMemAllocFunc", "ImGuiMemFreeFunc")
 OPAQUE_USER_EXACT = {"ImTextureID", "ImTextureRef", "ImGuiSelectionUserData"}
+
+
+def is_docking_or_viewport(name: str) -> bool:
+    """True if a function, enum, or enum element is a docking or viewport API."""
+    lower = name.lower()
+    return "dock" in lower or "viewport" in lower
 
 
 class Unsupported(Exception):
@@ -318,8 +324,8 @@ def enum_lua_name(enum: dict) -> str:
     return enum["name"].rstrip("_")
 
 
-def emit_enum(enum: dict) -> tuple[str, str]:
-    """Return (function_name, function_source) for one enum.
+def emit_enum(enum: dict, skip_elements: set[str] | None = None) -> tuple[str, str] | None:
+    """Return (function_name, function_source) for one enum, or None if empty.
 
     Uses a static array + a shared RegisterEnum helper rather than sol2's
     variadic new_enum: new_enum instantiates a deep template per member and
@@ -327,6 +333,8 @@ def emit_enum(enum: dict) -> tuple[str, str]:
     fraction of the code for identical Lua-visible behaviour (a global table of
     integer constants).
     """
+    if skip_elements is None:
+        skip_elements = set()
     lua = enum_lua_name(enum)
     prefix = enum["name"]
     fn_name = f"InitEnum_{lua}"
@@ -335,10 +343,14 @@ def emit_enum(enum: dict) -> tuple[str, str]:
         if el.get("is_internal"):
             continue
         member = el["name"]
+        if member in skip_elements or is_docking_or_viewport(member):
+            continue
         short = member[len(prefix):] if member.startswith(prefix) else member
         if not short:
             continue
         rows.append(f'      {{"{short}", static_cast<long long>({member})}}')
+    if not rows:
+        return None
     body = ",\n".join(rows)
     src = (f"static void {fn_name}(sol::state& lua) {{\n"
            f"  static const EnumEntry entries[] = {{\n{body}}};\n"
@@ -442,7 +454,12 @@ def imgui_version(meta: dict) -> str:
     return "unknown"
 
 
-def build_docs(meta: dict, canonical: list, bound_names: set, annotations: dict) -> str:
+def build_docs(meta: dict, canonical: list, bound_names: set, annotations: dict,
+               skip_enums: set | None = None, skip_elements: set | None = None) -> str:
+    if skip_enums is None:
+        skip_enums = set()
+    if skip_elements is None:
+        skip_elements = set()
     manual_names = set(annotations)
     all_bound = bound_names | manual_names
     out = [
@@ -504,9 +521,13 @@ def build_docs(meta: dict, canonical: list, bound_names: set, annotations: dict)
         if enum.get("is_internal"):
             continue
         lua = enum_lua_name(enum)
+        if lua in skip_enums or is_docking_or_viewport(lua):
+            continue
         members = []
         for el in enum["elements"]:
             if el.get("is_internal"):
+                continue
+            if el["name"] in skip_elements or is_docking_or_viewport(el["name"]):
                 continue
             short = el["name"][len(enum["name"]):] if el["name"].startswith(enum["name"]) else el["name"]
             if not short:
@@ -558,12 +579,18 @@ def main() -> int:
 
     with open(args.metadata, "rb") as f:
         meta = json.load(f)
-    # Enum type names (sans trailing "_") drive int-like argument classification.
-    global ENUM_TYPES
-    ENUM_TYPES = {enum_lua_name(e) for e in meta["enums"]}
     overrides = load_overrides()
     skip = set(overrides.get("skip", {}).get("functions", []))
+    skip_enums = set(overrides.get("skip", {}).get("enums", []))
+    skip_elements = set(overrides.get("skip", {}).get("enum_elements", []))
     manual = set(overrides.get("manual", {}).get("functions", []))
+
+    # Enum type names (sans trailing "_") drive int-like argument classification.
+    global ENUM_TYPES
+    ENUM_TYPES = {
+        enum_lua_name(e) for e in meta["enums"]
+        if enum_lua_name(e) not in skip_enums and not is_docking_or_viewport(enum_lua_name(e))
+    }
 
     GEN_DIR.mkdir(exist_ok=True)
 
@@ -573,7 +600,13 @@ def main() -> int:
     for enum in sorted(meta["enums"], key=lambda e: e["name"]):
         if enum.get("is_internal"):
             continue
-        fn_name, src = emit_enum(enum)
+        lua = enum_lua_name(enum)
+        if lua in skip_enums or is_docking_or_viewport(lua):
+            continue
+        res = emit_enum(enum, skip_elements)
+        if res is None:
+            continue
+        fn_name, src = res
         enum_fns.append(fn_name)
         enum_srcs.append(src)
     enum_file = [GENERATED_BANNER, '#include "sol_ImGui.h"\n',
@@ -607,8 +640,8 @@ def main() -> int:
     denied = []         # (lua_name, reason)
     for name in sorted(by_name):
         group = by_name[name]
-        if name in skip:
-            denied.append((name, "override: skip"))
+        if name in skip or is_docking_or_viewport(name):
+            denied.append((name, "excluded: docking/viewport API" if is_docking_or_viewport(name) else "override: skip"))
             continue
         if name in manual:
             denied.append((name, "override: manual (hand-written in manual/)"))
@@ -688,7 +721,7 @@ def main() -> int:
 
     DOCS_DIR.mkdir(exist_ok=True)
     bound_names = {n for n, _, _ in bound}
-    docs = build_docs(meta, canonical, bound_names, annotations)
+    docs = build_docs(meta, canonical, bound_names, annotations, skip_enums, skip_elements)
     write_if_changed(DOCS_DIR / "API.md", docs, args.check)
 
     print(f"enums: {len(enum_fns)}  functions bound: {len(bound)}  "

@@ -298,9 +298,6 @@ void SetNextWindowSizeConstraints(const ImVec2& size_min, const ImVec2& size_max
 }
 
 // ---- misc ----
-unsigned int DockSpace(unsigned int id, sol::optional<ImVec2> size, sol::optional<int> flags) {
-    return ImGui::DockSpace(id, size.value_or(ImVec2(0, 0)), flags.value_or(0));
-}
 bool IsRectVisibleSize(const ImVec2& size) { return ImGui::IsRectVisible(size); }
 bool IsRectVisibleRect(const ImVec2& rect_min, const ImVec2& rect_max) {
     return ImGui::IsRectVisible(rect_min, rect_max);
@@ -487,8 +484,6 @@ void InitManual(sol::table& t) {
     t.set_function("SetNextWindowSizeConstraints", SetNextWindowSizeConstraints);
 
     // misc
-    // @lua DockSpace(id: integer [, size: ImVec2, flags: integer]) -> integer
-    t.set_function("DockSpace", DockSpace);
     // @lua IsRectVisible(size: ImVec2) -> boolean
     // @lua IsRectVisible(rect_min: ImVec2, rect_max: ImVec2) -> boolean
     t.set_function("IsRectVisible", sol::overload(IsRectVisibleSize, IsRectVisibleRect));

@@ -45,7 +45,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
 - `ImGui.IsWindowCollapsed() -> boolean`
 - `ImGui.IsWindowFocused(flags: integer?) -> boolean` — is current window focused? or its root/child, depending on flags. see flags for options.
 - `ImGui.IsWindowHovered(flags: integer?) -> boolean` — is current window hovered and hoverable (e.g. not blocked by a popup/modal)? See ImGuiHoveredFlags_ for options. IMPORTANT: If you are trying to check whether your mouse should be dispatched to Dear ImGui or to your underlying app, you should not use this function! Use the 'io.WantCaptureMouse' boolean for that! Refer to FAQ entry "How can I tell whether to dispatch mouse/keyboard to Dear ImGui or my application?" for details.
-- `ImGui.GetWindowDpiScale() -> number` — get DPI scale currently associated to the current window's viewport.
 - `ImGui.GetWindowPos() -> ImVec2` — get current window position in screen space (IT IS UNLIKELY YOU EVER NEED TO USE THIS. Consider always using GetCursorScreenPos() and GetContentRegionAvail() instead)
 - `ImGui.GetWindowSize() -> ImVec2` — get current window size (IT IS UNLIKELY YOU EVER NEED TO USE THIS. Consider always using GetCursorScreenPos() and GetContentRegionAvail() instead)
 - `ImGui.GetWindowWidth() -> number` — get current window width (IT IS UNLIKELY YOU EVER NEED TO USE THIS). Shortcut for GetWindowSize().x.
@@ -58,7 +57,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
 - `ImGui.SetNextWindowFocus()` — set next window to be focused / top-most. call before Begin()
 - `ImGui.SetNextWindowScroll(scroll: ImVec2)` — set next window scrolling value (use < 0.0f to not affect a given axis).
 - `ImGui.SetNextWindowBgAlpha(alpha: number)` — set next window background color alpha. helper to easily override the Alpha component of ImGuiCol_WindowBg/ChildBg/PopupBg. you may also use ImGuiWindowFlags_NoBackground.
-- `ImGui.SetNextWindowViewport(viewport_id: integer)` — set next window viewport
 - `ImGui.SetWindowPos(pos: ImVec2 [, cond: integer])` † — (not recommended) set current window position - call within Begin()/End(). prefer using SetNextWindowPos(), as this may incur tearing and side-effects.
 - `ImGui.SetWindowSize(size: ImVec2 [, cond: integer])` † — (not recommended) set current window size - call within Begin()/End(). set to ImVec2(0, 0) to force an auto-fit. prefer using SetNextWindowSize(), as this may incur tearing and minor side-effects.
 - `ImGui.SetWindowCollapsed(collapsed: boolean [, cond: integer])` † — (not recommended) set current window collapsed state. prefer using SetNextWindowCollapsed().
@@ -298,10 +296,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
 - `ImGui.EndTabItem()` — only call EndTabItem() if BeginTabItem() returns true!
 - `ImGui.TabItemButton(label: string, flags: integer?) -> boolean` — create a Tab behaving like a button. return true when clicked. cannot be selected in the tab bar.
 - `ImGui.SetTabItemClosed(tab_or_docked_window_label: string)` — notify TabBar or Docking system of a closed tab/window ahead (useful to reduce visual flicker on reorderable tab bars). For tab-bar: call after BeginTabBar() and before Tab submissions. Otherwise call with a window name.
-- `ImGui.DockSpace(id: integer [, size: ImVec2, flags: integer]) -> integer` †
-- `ImGui.SetNextWindowDockID(dock_id: integer, cond: integer?)` — set next window dock id
-- `ImGui.GetWindowDockID() -> integer` — get dock id of current window, or 0 if not associated to any docking node.
-- `ImGui.IsWindowDocked() -> boolean` — is current window docked into another window?
 
 ### Logging/Capture
 
@@ -428,8 +422,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
 
 ### Memory Allocators
 
-- `ImGui.UpdatePlatformWindows()` — call in main loop. will call CreateWindow/ResizeWindow/etc. platform functions for each secondary viewport, and DestroyWindow for each inactive viewport.
-- `ImGui.DestroyPlatformWindows()` — call DestroyWindow platform functions for all viewports. call from backend Shutdown() if you need to close platform windows before imgui shutdown. otherwise will be called by DestroyContext().
 - `ImGui.SetColorEditOptions(flags: integer)` — set current options for if you want to select a default format, picker type, etc. User will be able to change those settings, unless you pass the _NoOptions flag to your calls.
 - `ImGui.SetWindowFontScale(scale: number)` — Set font scale factor for current window. Prefer using PushFont(NULL, style.FontSizeBase * factor) or use style.FontScaleMain to scale all windows.
 - `ImGui.PushButtonRepeat(repeat: boolean)`
@@ -464,7 +456,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImGuiWindowFlags.NoNavInputs` — No keyboard/gamepad navigation within the window
   - `ImGuiWindowFlags.NoNavFocus` — No focusing toward this window with keyboard/gamepad navigation (e.g. skipped by Ctrl+Tab)
   - `ImGuiWindowFlags.UnsavedDocument` — Display a dot next to the title. When used in a tab/docking context, tab is selected when clicking the X + closure is not assumed (will wait for user to stop submitting the tab). Otherwise closure is assumed when pressing the X, so if you keep submitting the tab may reappear at end of tab bar.
-  - `ImGuiWindowFlags.NoDocking` — Disable docking of this window
   - `ImGuiWindowFlags.NoNav`
   - `ImGuiWindowFlags.NoDecoration`
   - `ImGuiWindowFlags.NoInputs`
@@ -624,7 +615,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImGuiFocusedFlags.RootWindow` — Test from root window (top most parent of the current hierarchy)
   - `ImGuiFocusedFlags.AnyWindow` — Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs, do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
   - `ImGuiFocusedFlags.NoPopupHierarchy` — Do not consider popup hierarchy (do not treat popup emitter as parent of popup) (when used with _ChildWindows or _RootWindow)
-  - `ImGuiFocusedFlags.DockHierarchy` — Consider docking hierarchy (treat dockspace host as parent of docked window) (when used with _ChildWindows or _RootWindow)
   - `ImGuiFocusedFlags.RootAndChildWindows`
 
 ### ImGuiHoveredFlags
@@ -634,7 +624,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImGuiHoveredFlags.RootWindow` — IsWindowHovered() only: Test from root window (top most parent of the current hierarchy)
   - `ImGuiHoveredFlags.AnyWindow` — IsWindowHovered() only: Return true if any window is hovered
   - `ImGuiHoveredFlags.NoPopupHierarchy` — IsWindowHovered() only: Do not consider popup hierarchy (do not treat popup emitter as parent of popup) (when used with _ChildWindows or _RootWindow)
-  - `ImGuiHoveredFlags.DockHierarchy` — IsWindowHovered() only: Consider docking hierarchy (treat dockspace host as parent of docked window) (when used with _ChildWindows or _RootWindow)
   - `ImGuiHoveredFlags.AllowWhenBlockedByPopup` — Return true even if a popup window is normally blocking access to this item/window
   - `ImGuiHoveredFlags.AllowWhenBlockedByActiveItem` — Return true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
   - `ImGuiHoveredFlags.AllowWhenOverlappedByItem` — IsItemHovered() only: Return true even if the item uses AllowOverlap mode and is overlapped by another hoverable item.
@@ -650,19 +639,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImGuiHoveredFlags.DelayShort` — IsItemHovered() only: Return true after style.HoverDelayShort elapsed (~0.15 sec) (shared between items) + requires mouse to be stationary for style.HoverStationaryDelay (once per item).
   - `ImGuiHoveredFlags.DelayNormal` — IsItemHovered() only: Return true after style.HoverDelayNormal elapsed (~0.40 sec) (shared between items) + requires mouse to be stationary for style.HoverStationaryDelay (once per item).
   - `ImGuiHoveredFlags.NoSharedDelay` — IsItemHovered() only: Disable shared delay system where moving from one item to the next keeps the previous timer for a short time (standard for tooltips with long delays)
-
-### ImGuiDockNodeFlags
-
-  - `ImGuiDockNodeFlags.None`
-  - `ImGuiDockNodeFlags.KeepAliveOnly` — Don't display the dockspace node but keep it alive. Windows docked into this dockspace node won't be undocked.
-  - `ImGuiDockNodeFlags.NoDockingOverCentralNode` — Disable docking over the Central Node, which will be always kept empty.
-  - `ImGuiDockNodeFlags.PassthruCentralNode` — Enable passthru dockspace: 1) DockSpace() will render a ImGuiCol_WindowBg background covering everything excepted the Central Node when empty. Meaning the host window should probably use SetNextWindowBgAlpha(0.0f) prior to Begin() when using this. 2) When Central Node is empty: let inputs pass-through + won't display a DockingEmptyBg background. See demo for details.
-  - `ImGuiDockNodeFlags.NoDockingSplit` — Disable other windows/nodes from splitting this node.
-  - `ImGuiDockNodeFlags.NoResize` — Saved // Disable resizing node using the splitter/separators. Useful with programmatically setup dockspaces.
-  - `ImGuiDockNodeFlags.AutoHideTabBar` — Tab bar will automatically hide when there is a single window in the dock node.
-  - `ImGuiDockNodeFlags.NoUndocking` — Disable undocking this node.
-  - `ImGuiDockNodeFlags.NoSplit` — Renamed in 1.90
-  - `ImGuiDockNodeFlags.NoDockingInCentralNode` — Renamed in 1.90
 
 ### ImGuiDragDropFlags
 
@@ -897,14 +873,10 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImGuiConfigFlags.NoMouse` — Instruct dear imgui to disable mouse inputs and interactions.
   - `ImGuiConfigFlags.NoMouseCursorChange` — Instruct backend to not alter mouse cursor shape and visibility. Use if the backend cursor changes are interfering with yours and you don't want to use SetMouseCursor() to change mouse cursor. You may want to honor requests from imgui by reading GetMouseCursor() yourself instead.
   - `ImGuiConfigFlags.NoKeyboard` — Instruct dear imgui to disable keyboard inputs and interactions. This is done by ignoring keyboard events and clearing existing states.
-  - `ImGuiConfigFlags.DockingEnable` — Docking enable flags.
-  - `ImGuiConfigFlags.ViewportsEnable` — Viewport enable flags (require both ImGuiBackendFlags_PlatformHasViewports + ImGuiBackendFlags_RendererHasViewports set by the respective backends)
   - `ImGuiConfigFlags.IsSRGB` — Application is SRGB-aware.
   - `ImGuiConfigFlags.IsTouchScreen` — Application is using a touch screen instead of a mouse.
   - `ImGuiConfigFlags.NavEnableSetMousePos` — [moved/renamed in 1.91.4] -> use bool io.ConfigNavMoveSetMousePos
   - `ImGuiConfigFlags.NavNoCaptureKeyboard` — [moved/renamed in 1.91.4] -> use bool io.ConfigNavCaptureKeyboard
-  - `ImGuiConfigFlags.DpiEnableScaleFonts` — [moved/renamed in 1.92.0] -> use bool io.ConfigDpiScaleFonts
-  - `ImGuiConfigFlags.DpiEnableScaleViewports` — [moved/renamed in 1.92.0] -> use bool io.ConfigDpiScaleViewports
 
 ### ImGuiBackendFlags
 
@@ -914,10 +886,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImGuiBackendFlags.HasSetMousePos` — Backend Platform supports io.WantSetMousePos requests to reposition the OS mouse position (only used if io.ConfigNavMoveSetMousePos is set).
   - `ImGuiBackendFlags.RendererHasVtxOffset` — Backend Renderer supports ImDrawCmd::VtxOffset. This enables output of large meshes (64K+ vertices) while still using 16-bit indices.
   - `ImGuiBackendFlags.RendererHasTextures` — Backend Renderer supports ImTextureData requests to create/update/destroy textures. This enables incremental texture updates and texture reloads. See https://github.com/ocornut/imgui/blob/master/docs/BACKENDS.md for instructions on how to upgrade your custom backend.
-  - `ImGuiBackendFlags.RendererHasViewports` — Backend Renderer supports multiple viewports.
-  - `ImGuiBackendFlags.PlatformHasViewports` — Backend Platform supports multiple viewports.
-  - `ImGuiBackendFlags.HasMouseHoveredViewport` — Backend Platform supports calling io.AddMouseViewportEvent() with the viewport under the mouse. IF POSSIBLE, ignore viewports with the ImGuiViewportFlags_NoInputs flag (Win32 backend, GLFW 3.30+ backend can do this, SDL backend cannot). If this cannot be done, Dear ImGui needs to use a flawed heuristic to find the viewport under.
-  - `ImGuiBackendFlags.HasParentViewport` — Backend Platform supports honoring viewport->ParentViewport/ParentViewportId value, by applying the corresponding parent/child relationship at the Platform level. Child windows always appear in front of their parent window.
 
 ### ImGuiCol
 
@@ -963,8 +931,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImGuiCol.TabDimmed` — Tab background, when tab-bar is unfocused & tab is unselected
   - `ImGuiCol.TabDimmedSelected` — Tab background, when tab-bar is unfocused & tab is selected
   - `ImGuiCol.TabDimmedSelectedOverline` — ..horizontal overline, when tab-bar is unfocused & tab is selected
-  - `ImGuiCol.DockingPreview` — Preview overlay color when about to docking something
-  - `ImGuiCol.DockingEmptyBg` — Background color for empty node (e.g. CentralNode with no window docked into it)
   - `ImGuiCol.PlotLines`
   - `ImGuiCol.PlotLinesHovered`
   - `ImGuiCol.PlotHistogram`
@@ -1036,7 +1002,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImGuiStyleVar.SeparatorTextBorderSize` — float     SeparatorTextBorderSize
   - `ImGuiStyleVar.SeparatorTextAlign` — ImVec2    SeparatorTextAlign
   - `ImGuiStyleVar.SeparatorTextPadding` — ImVec2    SeparatorTextPadding
-  - `ImGuiStyleVar.DockingSeparatorSize` — float     DockingSeparatorSize
   - `ImGuiStyleVar.COUNT`
 
 ### ImGuiButtonFlags
@@ -1308,24 +1273,6 @@ Dear ImGui **1.93.0**. Lists every function and enum these bindings expose to Lu
   - `ImFontFlags.NoLoadGlyphs` — [Internal] Disable loading new glyphs.
   - `ImFontFlags.LockBakedSizes` — [Internal] Disable loading new baked sizes, disable garbage collecting current ones. e.g. if you want to lock a font to a single size. Important: if you use this to preload given sizes, consider the possibility of multiple font density used on Retina display.
   - `ImFontFlags.ImplicitRefSize` — [Internal] Reference size was not set explicitly.
-
-### ImGuiViewportFlags
-
-  - `ImGuiViewportFlags.None`
-  - `ImGuiViewportFlags.IsPlatformWindow` — Represent a Platform Window
-  - `ImGuiViewportFlags.IsPlatformMonitor` — Represent a Platform Monitor (unused yet)
-  - `ImGuiViewportFlags.OwnedByApp` — Platform Window: Is created/managed by the user application? (rather than our backend)
-  - `ImGuiViewportFlags.NoDecoration` — Platform Window: Disable platform decorations: title bar, borders, etc. (generally set all windows, but if ImGuiConfigFlags_ViewportsDecoration is set we only set this on popups/tooltips)
-  - `ImGuiViewportFlags.NoTaskBarIcon` — Platform Window: Disable platform task bar icon (generally set on popups/tooltips, or all windows if ImGuiConfigFlags_ViewportsNoTaskBarIcon is set)
-  - `ImGuiViewportFlags.NoFocusOnAppearing` — Platform Window: Don't take focus when created.
-  - `ImGuiViewportFlags.NoFocusOnClick` — Platform Window: Don't take focus when clicked on.
-  - `ImGuiViewportFlags.NoInputs` — Platform Window: Make mouse pass through so we can drag this window while peaking behind it.
-  - `ImGuiViewportFlags.NoRendererClear` — Platform Window: Renderer doesn't need to clear the framebuffer ahead (because we will fill it entirely).
-  - `ImGuiViewportFlags.NoAutoMerge` — Platform Window: Avoid merging this window into another host window. This can only be set via ImGuiWindowClass viewport flags override (because we need to now ahead if we are going to create a viewport in the first place!).
-  - `ImGuiViewportFlags.TopMost` — Platform Window: Display on top (for tooltips only).
-  - `ImGuiViewportFlags.CanHostOtherWindows` — Viewport can host multiple imgui windows (secondary viewports are associated to a single window). // FIXME: In practice there's still probably code making the assumption that this is always and only on the MainViewport. Will fix once we add support for "no main viewport".
-  - `ImGuiViewportFlags.IsMinimized` — Platform Window: Window is minimized, can skip render. When minimized we tend to avoid using the viewport pos/size for clipping window or testing if they are contained in the viewport.
-  - `ImGuiViewportFlags.IsFocused` — Platform Window: Window is focused (last call to Platform_GetWindowFocus() returned true)
 
 ### ImDrawListFlags
 

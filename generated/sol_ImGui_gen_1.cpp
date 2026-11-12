@@ -78,118 +78,108 @@ void DebugTextEncoding(const std::string& text) {
   ImGui::DebugTextEncoding(text.c_str());
 }
 
-std::tuple<float, float, bool> DragFloatRange2(const std::string& label, float v_current_min, float v_current_max, sol::optional<float> v_speed, sol::optional<float> v_min, sol::optional<float> v_max, sol::optional<std::string> format, sol::optional<std::string> format_max, sol::optional<ImGuiSliderFlags> flags) {
-  float v_current_min_v = v_current_min;
-  float v_current_max_v = v_current_max;
+std::tuple<int, bool> DragInt(const std::string& label, int v, sol::optional<float> v_speed, sol::optional<int> v_min, sol::optional<int> v_max, sol::optional<std::string> format, sol::optional<ImGuiSliderFlags> flags) {
+  int v_v = v;
   float v_speed_v = v_speed.value_or(1.0f);
-  float v_min_v = v_min.value_or(0.0f);
-  float v_max_v = v_max.value_or(0.0f);
-  std::string format_v = format.value_or(std::string("%.3f"));
-  std::string format_max_v = format_max.value_or(std::string());
+  int v_min_v = v_min.value_or(0);
+  int v_max_v = v_max.value_or(0);
+  std::string format_v = format.value_or(std::string("%d"));
   ImGuiSliderFlags flags_v = static_cast<ImGuiSliderFlags>(flags.value_or(0));
-  auto ret = ImGui::DragFloatRange2(label.c_str(), &v_current_min_v, &v_current_max_v, v_speed_v, v_min_v, v_max_v, format_v.c_str(), format_max_v.c_str(), flags_v);
-  return std::make_tuple(v_current_min_v, v_current_max_v, ret);
+  auto ret = ImGui::DragInt(label.c_str(), &v_v, v_speed_v, v_min_v, v_max_v, format_v.c_str(), flags_v);
+  return std::make_tuple(v_v, ret);
 }
 
-void Dummy(const ImVec2& size) {
-  ImGui::Dummy(size);
+void End() {
+  ImGui::End();
 }
 
-void EndCombo() {
-  ImGui::EndCombo();
+void EndDisabled() {
+  ImGui::EndDisabled();
 }
 
-void EndDragDropTarget() {
-  ImGui::EndDragDropTarget();
+void EndFrame() {
+  ImGui::EndFrame();
 }
 
-void EndListBox() {
-  ImGui::EndListBox();
+void EndMainMenuBar() {
+  ImGui::EndMainMenuBar();
 }
 
-void EndMenuBar() {
-  ImGui::EndMenuBar();
+void EndPopup() {
+  ImGui::EndPopup();
 }
 
-void EndTabItem() {
-  ImGui::EndTabItem();
+void EndTable() {
+  ImGui::EndTable();
 }
 
-std::string GetClipboardText() {
-  const char* ret = ImGui::GetClipboardText();
+int GetColumnIndex() {
+  auto ret = ImGui::GetColumnIndex();
+  return ret;
+}
+
+int GetColumnsCount() {
+  auto ret = ImGui::GetColumnsCount();
+  return ret;
+}
+
+ImVec2 GetCursorPos() {
+  auto ret = ImGui::GetCursorPos();
+  return ret;
+}
+
+ImVec2 GetCursorScreenPos() {
+  auto ret = ImGui::GetCursorScreenPos();
+  return ret;
+}
+
+ImVec2 GetFontTexUvWhitePixel() {
+  auto ret = ImGui::GetFontTexUvWhitePixel();
+  return ret;
+}
+
+float GetFrameHeightWithSpacing() {
+  auto ret = ImGui::GetFrameHeightWithSpacing();
+  return ret;
+}
+
+ImGuiID GetItemID() {
+  auto ret = ImGui::GetItemID();
+  return ret;
+}
+
+ImVec2 GetItemRectSize() {
+  auto ret = ImGui::GetItemRectSize();
+  return ret;
+}
+
+int GetMouseClickedCount(ImGuiMouseButton button) {
+  auto ret = ImGui::GetMouseClickedCount(static_cast<ImGuiMouseButton>(button));
+  return ret;
+}
+
+ImVec2 GetMousePos() {
+  auto ret = ImGui::GetMousePos();
+  return ret;
+}
+
+float GetScrollMaxY() {
+  auto ret = ImGui::GetScrollMaxY();
+  return ret;
+}
+
+std::string GetStyleColorName(ImGuiCol idx) {
+  const char* ret = ImGui::GetStyleColorName(static_cast<ImGuiCol>(idx));
   return std::string(ret ? ret : "");
 }
 
-float GetColumnWidth(sol::optional<int> column_index) {
-  int column_index_v = column_index.value_or(-1);
-  auto ret = ImGui::GetColumnWidth(column_index_v);
+double GetTime() {
+  auto ret = ImGui::GetTime();
   return ret;
 }
 
-ImVec2 GetContentRegionMax() {
-  auto ret = ImGui::GetContentRegionMax();
-  return ret;
-}
-
-float GetCursorPosY() {
-  auto ret = ImGui::GetCursorPosY();
-  return ret;
-}
-
-float GetFontSize() {
-  auto ret = ImGui::GetFontSize();
-  return ret;
-}
-
-float GetFrameHeight() {
-  auto ret = ImGui::GetFrameHeight();
-  return ret;
-}
-
-ImGuiItemFlags GetItemFlags() {
-  auto ret = ImGui::GetItemFlags();
-  return ret;
-}
-
-ImVec2 GetItemRectMin() {
-  auto ret = ImGui::GetItemRectMin();
-  return ret;
-}
-
-int GetKeyPressedAmount(ImGuiKey key, float repeat_delay, float rate) {
-  auto ret = ImGui::GetKeyPressedAmount(static_cast<ImGuiKey>(key), repeat_delay, rate);
-  return ret;
-}
-
-ImVec2 GetMouseDragDelta(sol::optional<ImGuiMouseButton> button, sol::optional<float> lock_threshold) {
-  ImGuiMouseButton button_v = static_cast<ImGuiMouseButton>(button.value_or(0));
-  float lock_threshold_v = lock_threshold.value_or(-1.0f);
-  auto ret = ImGui::GetMouseDragDelta(button_v, lock_threshold_v);
-  return ret;
-}
-
-float GetScrollMaxX() {
-  auto ret = ImGui::GetScrollMaxX();
-  return ret;
-}
-
-float GetScrollY() {
-  auto ret = ImGui::GetScrollY();
-  return ret;
-}
-
-float GetTextLineHeightWithSpacing() {
-  auto ret = ImGui::GetTextLineHeightWithSpacing();
-  return ret;
-}
-
-std::string GetVersion() {
-  const char* ret = ImGui::GetVersion();
-  return std::string(ret ? ret : "");
-}
-
-ImGuiID GetWindowDockID() {
-  auto ret = ImGui::GetWindowDockID();
+ImVec2 GetWindowContentRegionMax() {
+  auto ret = ImGui::GetWindowContentRegionMax();
   return ret;
 }
 
@@ -265,102 +255,96 @@ bool IsWindowCollapsed() {
   return ret;
 }
 
-bool IsWindowHovered(sol::optional<ImGuiHoveredFlags> flags) {
-  ImGuiHoveredFlags flags_v = static_cast<ImGuiHoveredFlags>(flags.value_or(0));
-  auto ret = ImGui::IsWindowHovered(flags_v);
+void LoadIniSettingsFromDisk(const std::string& ini_filename) {
+  ImGui::LoadIniSettingsFromDisk(ini_filename.c_str());
+}
+
+void LogFinish() {
+  ImGui::LogFinish();
+}
+
+void LogToTTY(sol::optional<int> auto_open_depth) {
+  int auto_open_depth_v = auto_open_depth.value_or(-1);
+  ImGui::LogToTTY(auto_open_depth_v);
+}
+
+void NextColumn() {
+  ImGui::NextColumn();
+}
+
+void PopClipRect() {
+  ImGui::PopClipRect();
+}
+
+void PopItemFlag() {
+  ImGui::PopItemFlag();
+}
+
+void PopStyleVar(sol::optional<int> count) {
+  int count_v = count.value_or(1);
+  ImGui::PopStyleVar(count_v);
+}
+
+void ProgressBar(float fraction, sol::optional<ImVec2> size_arg, sol::optional<std::string> overlay) {
+  ImVec2 size_arg_v = size_arg.value_or(ImVec2(-FLT_MIN, 0));
+  std::string overlay_v = overlay.value_or(std::string());
+  ImGui::ProgressBar(fraction, size_arg_v, overlay_v.c_str());
+}
+
+void PushItemFlag(ImGuiItemFlags option, bool enabled) {
+  ImGui::PushItemFlag(static_cast<ImGuiItemFlags>(option), enabled);
+}
+
+void PushStyleVarY(ImGuiStyleVar idx, float val_y) {
+  ImGui::PushStyleVarY(static_cast<ImGuiStyleVar>(idx), val_y);
+}
+
+void Render() {
+  ImGui::Render();
+}
+
+void SaveIniSettingsToDisk(const std::string& ini_filename) {
+  ImGui::SaveIniSettingsToDisk(ini_filename.c_str());
+}
+
+void SetClipboardText(const std::string& text) {
+  ImGui::SetClipboardText(text.c_str());
+}
+
+void SetColumnWidth(int column_index, float width) {
+  ImGui::SetColumnWidth(column_index, width);
+}
+
+void SetCursorPosY(float local_y) {
+  ImGui::SetCursorPosY(local_y);
+}
+
+bool SetItemKeyOwner(ImGuiKey key) {
+  auto ret = ImGui::SetItemKeyOwner(static_cast<ImGuiKey>(key));
   return ret;
 }
 
-void LogButtons() {
-  ImGui::LogButtons();
+void SetNavCursorVisible(bool visible) {
+  ImGui::SetNavCursorVisible(visible);
 }
 
-void LogToFile(sol::optional<int> auto_open_depth, sol::optional<std::string> filename) {
-  int auto_open_depth_v = auto_open_depth.value_or(-1);
-  std::string filename_v = filename.value_or(std::string());
-  ImGui::LogToFile(auto_open_depth_v, filename_v.c_str());
+void SetNextItemAllowOverlap() {
+  ImGui::SetNextItemAllowOverlap();
 }
 
-void NewLine() {
-  ImGui::NewLine();
+void SetNextItemStorageID(ImGuiID storage_id) {
+  ImGui::SetNextItemStorageID(static_cast<ImGuiID>(storage_id));
 }
 
-void PopButtonRepeat() {
-  ImGui::PopButtonRepeat();
-}
-
-void PopID() {
-  ImGui::PopID();
-}
-
-void PopStyleColor(sol::optional<int> count) {
-  int count_v = count.value_or(1);
-  ImGui::PopStyleColor(count_v);
-}
-
-void PopTextWrapPos() {
-  ImGui::PopTextWrapPos();
-}
-
-void PushClipRect(const ImVec2& clip_rect_min, const ImVec2& clip_rect_max, bool intersect_with_current_clip_rect) {
-  ImGui::PushClipRect(clip_rect_min, clip_rect_max, intersect_with_current_clip_rect);
-}
-
-void PushStyleVarX(ImGuiStyleVar idx, float val_x) {
-  ImGui::PushStyleVarX(static_cast<ImGuiStyleVar>(idx), val_x);
-}
-
-void PushTextWrapPos(sol::optional<float> wrap_local_pos_x) {
-  float wrap_local_pos_x_v = wrap_local_pos_x.value_or(0.0f);
-  ImGui::PushTextWrapPos(wrap_local_pos_x_v);
-}
-
-void SameLine(sol::optional<float> offset_from_start_x, sol::optional<float> spacing) {
-  float offset_from_start_x_v = offset_from_start_x.value_or(0.0f);
-  float spacing_v = spacing.value_or(-1.0f);
-  ImGui::SameLine(offset_from_start_x_v, spacing_v);
-}
-
-void SeparatorText(const std::string& label) {
-  ImGui::SeparatorText(label.c_str());
-}
-
-void SetColumnOffset(int column_index, float offset_x) {
-  ImGui::SetColumnOffset(column_index, offset_x);
-}
-
-void SetCursorPosX(float local_x) {
-  ImGui::SetCursorPosX(local_x);
-}
-
-void SetItemDefaultFocus() {
-  ImGui::SetItemDefaultFocus();
-}
-
-void SetMouseCursor(ImGuiMouseCursor cursor_type) {
-  ImGui::SetMouseCursor(static_cast<ImGuiMouseCursor>(cursor_type));
-}
-
-void SetNextFrameWantCaptureMouse(bool want_capture_mouse) {
-  ImGui::SetNextFrameWantCaptureMouse(want_capture_mouse);
-}
-
-void SetNextItemShortcut(ImGuiKeyChord key_chord, sol::optional<ImGuiInputFlags> flags) {
-  ImGuiInputFlags flags_v = static_cast<ImGuiInputFlags>(flags.value_or(0));
-  ImGui::SetNextItemShortcut(static_cast<ImGuiKeyChord>(key_chord), flags_v);
-}
-
-void SetNextWindowBgAlpha(float alpha) {
-  ImGui::SetNextWindowBgAlpha(alpha);
-}
-
-void SetNextWindowDockID(ImGuiID dock_id, sol::optional<ImGuiCond> cond) {
+void SetNextWindowCollapsed(bool collapsed, sol::optional<ImGuiCond> cond) {
   ImGuiCond cond_v = static_cast<ImGuiCond>(cond.value_or(0));
-  ImGui::SetNextWindowDockID(static_cast<ImGuiID>(dock_id), cond_v);
+  ImGui::SetNextWindowCollapsed(collapsed, cond_v);
 }
 
-void SetNextWindowScroll(const ImVec2& scroll) {
-  ImGui::SetNextWindowScroll(scroll);
+void SetNextWindowPos(const ImVec2& pos, sol::optional<ImGuiCond> cond, sol::optional<ImVec2> pivot) {
+  ImGuiCond cond_v = static_cast<ImGuiCond>(cond.value_or(0));
+  ImVec2 pivot_v = pivot.value_or(ImVec2(0, 0));
+  ImGui::SetNextWindowPos(pos, cond_v, pivot_v);
 }
 
 void SetScrollFromPosX(float local_x, sol::optional<float> center_x_ratio) {
@@ -433,14 +417,6 @@ void Unindent(sol::optional<float> indent_w) {
   ImGui::Unindent(indent_w_v);
 }
 
-std::tuple<int, bool> VSliderInt(const std::string& label, const ImVec2& size, int v, int v_min, int v_max, sol::optional<std::string> format, sol::optional<ImGuiSliderFlags> flags) {
-  int v_v = v;
-  std::string format_v = format.value_or(std::string("%d"));
-  ImGuiSliderFlags flags_v = static_cast<ImGuiSliderFlags>(flags.value_or(0));
-  auto ret = ImGui::VSliderInt(label.c_str(), size, &v_v, v_min, v_max, format_v.c_str(), flags_v);
-  return std::make_tuple(v_v, ret);
-}
-
 }  // namespace
 
 void InitGenerated_1(sol::table& t) {
@@ -456,28 +432,27 @@ void InitGenerated_1(sol::table& t) {
   t.set_function("ColorConvertRGBtoHSV", ColorConvertRGBtoHSV);
   t.set_function("DebugCheckVersionAndDataLayout", DebugCheckVersionAndDataLayout);
   t.set_function("DebugTextEncoding", DebugTextEncoding);
-  t.set_function("DragFloatRange2", DragFloatRange2);
-  t.set_function("Dummy", Dummy);
-  t.set_function("EndCombo", EndCombo);
-  t.set_function("EndDragDropTarget", EndDragDropTarget);
-  t.set_function("EndListBox", EndListBox);
-  t.set_function("EndMenuBar", EndMenuBar);
-  t.set_function("EndTabItem", EndTabItem);
-  t.set_function("GetClipboardText", GetClipboardText);
-  t.set_function("GetColumnWidth", GetColumnWidth);
-  t.set_function("GetContentRegionMax", GetContentRegionMax);
-  t.set_function("GetCursorPosY", GetCursorPosY);
-  t.set_function("GetFontSize", GetFontSize);
-  t.set_function("GetFrameHeight", GetFrameHeight);
-  t.set_function("GetItemFlags", GetItemFlags);
-  t.set_function("GetItemRectMin", GetItemRectMin);
-  t.set_function("GetKeyPressedAmount", GetKeyPressedAmount);
-  t.set_function("GetMouseDragDelta", GetMouseDragDelta);
-  t.set_function("GetScrollMaxX", GetScrollMaxX);
-  t.set_function("GetScrollY", GetScrollY);
-  t.set_function("GetTextLineHeightWithSpacing", GetTextLineHeightWithSpacing);
-  t.set_function("GetVersion", GetVersion);
-  t.set_function("GetWindowDockID", GetWindowDockID);
+  t.set_function("DragInt", DragInt);
+  t.set_function("End", End);
+  t.set_function("EndDisabled", EndDisabled);
+  t.set_function("EndFrame", EndFrame);
+  t.set_function("EndMainMenuBar", EndMainMenuBar);
+  t.set_function("EndPopup", EndPopup);
+  t.set_function("EndTable", EndTable);
+  t.set_function("GetColumnIndex", GetColumnIndex);
+  t.set_function("GetColumnsCount", GetColumnsCount);
+  t.set_function("GetCursorPos", GetCursorPos);
+  t.set_function("GetCursorScreenPos", GetCursorScreenPos);
+  t.set_function("GetFontTexUvWhitePixel", GetFontTexUvWhitePixel);
+  t.set_function("GetFrameHeightWithSpacing", GetFrameHeightWithSpacing);
+  t.set_function("GetItemID", GetItemID);
+  t.set_function("GetItemRectSize", GetItemRectSize);
+  t.set_function("GetMouseClickedCount", GetMouseClickedCount);
+  t.set_function("GetMousePos", GetMousePos);
+  t.set_function("GetScrollMaxY", GetScrollMaxY);
+  t.set_function("GetStyleColorName", GetStyleColorName);
+  t.set_function("GetTime", GetTime);
+  t.set_function("GetWindowContentRegionMax", GetWindowContentRegionMax);
   t.set_function("GetWindowPos", GetWindowPos);
   t.set_function("Indent", Indent);
   t.set_function("InputInt", InputInt);
@@ -491,28 +466,27 @@ void InitGenerated_1(sol::table& t) {
   t.set_function("IsMouseDragging", IsMouseDragging);
   t.set_function("IsMouseReleasedWithDelay", IsMouseReleasedWithDelay);
   t.set_function("IsWindowCollapsed", IsWindowCollapsed);
-  t.set_function("IsWindowHovered", IsWindowHovered);
-  t.set_function("LogButtons", LogButtons);
-  t.set_function("LogToFile", LogToFile);
-  t.set_function("NewLine", NewLine);
-  t.set_function("PopButtonRepeat", PopButtonRepeat);
-  t.set_function("PopID", PopID);
-  t.set_function("PopStyleColor", PopStyleColor);
-  t.set_function("PopTextWrapPos", PopTextWrapPos);
-  t.set_function("PushClipRect", PushClipRect);
-  t.set_function("PushStyleVarX", PushStyleVarX);
-  t.set_function("PushTextWrapPos", PushTextWrapPos);
-  t.set_function("SameLine", SameLine);
-  t.set_function("SeparatorText", SeparatorText);
-  t.set_function("SetColumnOffset", SetColumnOffset);
-  t.set_function("SetCursorPosX", SetCursorPosX);
-  t.set_function("SetItemDefaultFocus", SetItemDefaultFocus);
-  t.set_function("SetMouseCursor", SetMouseCursor);
-  t.set_function("SetNextFrameWantCaptureMouse", SetNextFrameWantCaptureMouse);
-  t.set_function("SetNextItemShortcut", SetNextItemShortcut);
-  t.set_function("SetNextWindowBgAlpha", SetNextWindowBgAlpha);
-  t.set_function("SetNextWindowDockID", SetNextWindowDockID);
-  t.set_function("SetNextWindowScroll", SetNextWindowScroll);
+  t.set_function("LoadIniSettingsFromDisk", LoadIniSettingsFromDisk);
+  t.set_function("LogFinish", LogFinish);
+  t.set_function("LogToTTY", LogToTTY);
+  t.set_function("NextColumn", NextColumn);
+  t.set_function("PopClipRect", PopClipRect);
+  t.set_function("PopItemFlag", PopItemFlag);
+  t.set_function("PopStyleVar", PopStyleVar);
+  t.set_function("ProgressBar", ProgressBar);
+  t.set_function("PushItemFlag", PushItemFlag);
+  t.set_function("PushStyleVarY", PushStyleVarY);
+  t.set_function("Render", Render);
+  t.set_function("SaveIniSettingsToDisk", SaveIniSettingsToDisk);
+  t.set_function("SetClipboardText", SetClipboardText);
+  t.set_function("SetColumnWidth", SetColumnWidth);
+  t.set_function("SetCursorPosY", SetCursorPosY);
+  t.set_function("SetItemKeyOwner", SetItemKeyOwner);
+  t.set_function("SetNavCursorVisible", SetNavCursorVisible);
+  t.set_function("SetNextItemAllowOverlap", SetNextItemAllowOverlap);
+  t.set_function("SetNextItemStorageID", SetNextItemStorageID);
+  t.set_function("SetNextWindowCollapsed", SetNextWindowCollapsed);
+  t.set_function("SetNextWindowPos", SetNextWindowPos);
   t.set_function("SetScrollFromPosX", SetScrollFromPosX);
   t.set_function("SetScrollHereY", SetScrollHereY);
   t.set_function("SetTabItemClosed", SetTabItemClosed);
@@ -527,6 +501,5 @@ void InitGenerated_1(sol::table& t) {
   t.set_function("TableSetupScrollFreeze", TableSetupScrollFreeze);
   t.set_function("TextUnformatted", TextUnformatted);
   t.set_function("Unindent", Unindent);
-  t.set_function("VSliderInt", VSliderInt);
 }
 }  // namespace sol_ImGui
